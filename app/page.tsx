@@ -135,10 +135,10 @@ export default function CryptoPositionCalculator() {
           <div className="flex-1">
             <div className="flex items-center justify-center gap-2">
               <Calculator className="w-8 h-8 text-yellow-400" />
-              <h1 className="text-2xl font-bold text-black dark:text-white">Position Size Calculator</h1>
+              <h1 className="text-2xl font-bold text-black dark:text-white">KlickKlack</h1>
             </div>
             <p className="text-gray-600 dark:text-slate-400 text-sm text-center mt-2">
-              Calculate your crypto futures position size
+              Smart Calculations, Made Easy.
             </p>
           </div>
           <Button
