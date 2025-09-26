@@ -10,13 +10,41 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Calculator, TrendingUp, Shield, Target, Sun, Share2, Download, Moon } from "lucide-react"
 import { useTheme } from "next-themes"
 import jsPDF from "jspdf"
+import Head from "next/head"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
-export default function CryptoPositionCalculator() {
+export default function Home() {
   const [capital, setCapital] = useState<string>("")
   const [riskPercentage, setRiskPercentage] = useState<string>("")
   const [entryPrice, setEntryPrice] = useState<string>("")
   const [stopLoss, setStopLoss] = useState<string>("")
   const [takeProfit, setTakeProfit] = useState<string>("")
+
+  const [fromCurrency, setFromCurrency] = useState<string>("USD")
+  const [toCurrency, setToCurrency] = useState<string>("WON")
+  const [amount, setAmount] = useState<string>("")
+  const [convertedAmount, setConvertedAmount] = useState<string>("")
+
+  const convertCurrency = async (from: string, to: string, amt: string) => {
+    const amountNum = Number.parseFloat(amt)
+    if (Number.isNaN(amountNum) || amountNum === 0) {
+      setConvertedAmount("")
+      return
+    }
+
+    // Mock conversion rates (replace with actual API call)
+    const rates: { [key: string]: { [key: string]: number } } = {
+      USD: { WON: 1409 },
+      WON: { USD: 1 / 1409 },
+    }
+
+    const rate = rates[from]?.[to]
+    if (rate) {
+      setConvertedAmount((amountNum * rate).toFixed(2))
+    } else {
+      setConvertedAmount("N/A")
+    }
+  }
 
   const [results, setResults] = useState({
     riskAmount: 0,
@@ -127,6 +155,10 @@ export default function CryptoPositionCalculator() {
     }
   }, [capital, riskPercentage, entryPrice, stopLoss, takeProfit])
 
+  useEffect(() => {
+    convertCurrency(fromCurrency, toCurrency, amount)
+  }, [fromCurrency, toCurrency, amount])
+
   return (
     <div className="min-h-screen bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-4">
       <div className="max-w-md mx-auto space-y-6">
@@ -173,79 +205,58 @@ export default function CryptoPositionCalculator() {
           <CardHeader>
             <CardTitle className="text-black dark:text-white flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-green-400" />
-              Trading Parameters
+              Currency Converter
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="capital" className="text-gray-700 dark:text-slate-300">
-                Overall Capital (USDT/USDC)
+              <Label htmlFor="fromCurrency" className="text-gray-700 dark:text-slate-300">
+                From Currency
+              </Label>
+              <Select value={fromCurrency} onValueChange={setFromCurrency}>
+                <SelectTrigger className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400">
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="WON">WON</SelectItem>
+                  {/* Add more currencies as needed */}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="toCurrency" className="text-gray-700 dark:text-slate-300">
+                To Currency
+              </Label>
+              <Select value={toCurrency} onValueChange={setToCurrency}>
+                <SelectTrigger className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400">
+                  <SelectValue placeholder="Select currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="WON">WON</SelectItem>
+                  {/* Add more currencies as needed */}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="amount" className="text-gray-700 dark:text-slate-300">
+                Amount
               </Label>
               <Input
-                id="capital"
+                id="amount"
                 type="number"
                 placeholder="e.g., 1000"
-                value={capital}
-                onChange={(e) => setCapital(e.target.value)}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 className="bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="risk" className="text-gray-700 dark:text-slate-300">
-                Risk Percentage (%)
-              </Label>
-              <Input
-                id="risk"
-                type="number"
-                placeholder="e.g., 2"
-                value={riskPercentage}
-                onChange={(e) => setRiskPercentage(e.target.value)}
-                className="bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="entry" className="text-gray-700 dark:text-slate-300">
-                Entry Price (USDT/USDC)
-              </Label>
-              <Input
-                id="entry"
-                type="number"
-                placeholder="e.g., 100"
-                value={entryPrice}
-                onChange={(e) => setEntryPrice(e.target.value)}
-                className="bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="stopLoss" className="text-gray-700 dark:text-slate-300">
-                Stop Loss (USDT/USDC)
-              </Label>
-              <Input
-                id="stopLoss"
-                type="number"
-                placeholder="e.g., 97"
-                value={stopLoss}
-                onChange={(e) => setStopLoss(e.target.value)}
-                className="bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="takeProfit" className="text-gray-700 dark:text-slate-300">
-                Take Profit (USDT/USDC) - Optional
-              </Label>
-              <Input
-                id="takeProfit"
-                type="number"
-                placeholder="e.g., 105"
-                value={takeProfit}
-                onChange={(e) => setTakeProfit(e.target.value)}
-                className="bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
-              />
-            </div>
+            {/* Calculation Results Section */}
+            
           </CardContent>
         </Card>
 
@@ -274,13 +285,10 @@ export default function CryptoPositionCalculator() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <p className="text-gray-600 dark:text-slate-400 text-sm">Risk Amount</p>
-                <p className="text-green-400 font-bold text-lg">${results.riskAmount.toFixed(2)}</p>
+                <p className="text-gray-600 dark:text-slate-400 text-sm">Converted Amount</p>
+                <p className="text-green-400 font-bold text-lg">{convertedAmount} {toCurrency}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-gray-600 dark:text-slate-400 text-sm">Position Size</p>
-                <p className="text-yellow-400 font-bold text-lg">{results.positionSize.toFixed(4)}</p>
-              </div>
+              
             </div>
 
             {results.potentialProfit > 0 && (
