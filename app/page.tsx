@@ -212,6 +212,13 @@ const [tdee, setTdee] = useState<number | null>(null);
   const [sleepDuration, setSleepDuration] = useState<number | ''>('');
   const [bedTime, setBedTime] = useState('');
 
+  // Student Loan Calculator states
+  const [loanAmount, setLoanAmount] = useState<number | ''>('');
+  const [interestRate, setInterestRate] = useState<number | ''>('');
+  const [loanTerm, setLoanTerm] = useState<number | ''>(''); // in years
+  const [monthlyPayment, setMonthlyPayment] = useState<number | null>(null);
+  const [totalInterest, setTotalInterest] = useState<number | null>(null);
+
   useEffect(() => {
       if (dob) {
           const birthDate = new Date(dob);
@@ -356,57 +363,29 @@ const [tdee, setTdee] = useState<number | null>(null);
     }
   };
 
-  const calculateGPA = () => {
-    if (courses.length === 0) {
-      setGpa(null);
-      return;
-    }
+  const calculateLoanPayments = () => {
+    if (loanAmount && interestRate && loanTerm) {
+      const principal = Number(loanAmount);
+      const annualInterestRate = Number(interestRate) / 100;
+      const numberOfPayments = Number(loanTerm) * 12;
 
-    let totalCredits = 0;
-    let totalGradePoints = 0;
-
-    courses.forEach((course) => {
-      const points = gradeToPoints[course.grade];
-      if (points !== undefined) {
-        totalCredits += course.credits;
-        totalGradePoints += points * course.credits;
-      }
-    });
-
-    if (totalCredits === 0) {
-      setGpa("0.00");
-    } else {
-      setGpa((totalGradePoints / totalCredits).toFixed(2));
-    }
-  };
-
-  useEffect(() => {
-    calculateGPA();
-  }, [courses]);
-
-  const convertTime = () => {
-    if (!timeToConvert) {
-      setConvertedTime("Please enter a time to convert.");
-      return;
-    }
-
-    try {
-      const date = new Date(timeToConvert);
-      if (isNaN(date.getTime())) {
-        setConvertedTime("Invalid time format. Please use YYYY-MM-DD HH:MM.");
+      if (annualInterestRate === 0) {
+        const monthly = principal / numberOfPayments;
+        setMonthlyPayment(monthly);
+        setTotalInterest(0);
         return;
       }
 
-      const fromTime = new Date(date.toLocaleString("en-US", { timeZone: fromTimeZone }));
-      const toTime = new Date(date.toLocaleString("en-US", { timeZone: toTimeZone }));
-
-      const diff = toTime.getTime() - fromTime.getTime();
-      const resultDate = new Date(date.getTime() + diff);
-
-      setConvertedTime(resultDate.toLocaleString("en-US", { timeZone: toTimeZone }));
-    } catch (error) {
-      setConvertedTime("Error converting time. Please check your input and try again.");
-      console.error("Time conversion error:", error);
+      const monthlyInterestRate = annualInterestRate / 12;
+      const monthlyPaymentValue = 
+        (principal * monthlyInterestRate) / 
+        (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+      
+      setMonthlyPayment(monthlyPaymentValue);
+      setTotalInterest((monthlyPaymentValue * numberOfPayments) - principal);
+    } else {
+      setMonthlyPayment(null);
+      setTotalInterest(null);
     }
   };
 
@@ -448,6 +427,7 @@ const [tdee, setTdee] = useState<number | null>(null);
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Age Calculator')}>Age Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Health Calculator')}>Health Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Sleep Calculator')}>Sleep Calculator</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Student Loan Calculator')}>Student Loan Calculator</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -870,14 +850,66 @@ const [tdee, setTdee] = useState<number | null>(null);
                   type="number"
                   value={sleepDuration}
                   onChange={(e) => setSleepDuration(e.target.value)}
-                  placeholder="Enter desired sleep duration in hours"
+                  placeholder="e.g., 8"
                   className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
                 />
               </div>
+              <Button onClick={calculateBedTime} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Calculate Bedtime
+              </Button>
               {bedTime && (
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
-                  <p className="text-sm font-medium">Recommended Bed Time:</p>
-                  <p className="text-lg font-bold">{bedTime}</p>
+                  <p className="text-sm font-medium">You should go to bed by: <span className="font-bold">{bedTime}</span></p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {selectedCalculator === 'Student Loan Calculator' && (
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+            <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Student Loan Calculator</CardTitle>
+            <CardContent className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="loanAmount" className="text-gray-700 dark:text-gray-300">Loan Amount ($)</Label>
+                <Input
+                  id="loanAmount"
+                  type="number"
+                  value={loanAmount}
+                  onChange={(e) => setLoanAmount(e.target.value === '' ? '' : Number(e.target.value))}
+                  placeholder="e.g., 20000"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="interestRate" className="text-gray-700 dark:text-gray-300">Annual Interest Rate (%)</Label>
+                <Input
+                  id="interestRate"
+                  type="number"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value === '' ? '' : Number(e.target.value))}
+                  placeholder="e.g., 5"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="loanTerm" className="text-gray-700 dark:text-gray-300">Loan Term (Years)</Label>
+                <Input
+                  id="loanTerm"
+                  type="number"
+                  value={loanTerm}
+                  onChange={(e) => setLoanTerm(e.target.value === '' ? '' : Number(e.target.value))}
+                  placeholder="e.g., 10"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              <Button onClick={calculateLoanPayments} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Calculate Payments
+              </Button>
+              {(monthlyPayment !== null && totalInterest !== null) && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Monthly Payment: <span className="font-bold">${monthlyPayment.toFixed(2)}</span></p>
+                  <p className="text-sm font-medium">Total Interest: <span className="font-bold">${totalInterest.toFixed(2)}</span></p>
                 </div>
               )}
             </CardContent>
@@ -885,5 +917,5 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
       </main>
     </div>
-  )
+  );
 }
