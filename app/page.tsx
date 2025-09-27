@@ -82,6 +82,25 @@ export default function Home() {
   const [toUnit, setToUnit] = useState("feet");
   const [unitAmount, setUnitAmount] = useState<number | ''>('');
   const [convertedUnit, setConvertedUnit] = useState<number | null>(null);
+  
+  const [totalBill, setTotalBill] = useState<number | ''>('');
+  const [numberOfPeople, setNumberOfPeople] = useState<number | ''>('');
+  const [tipPercentage, setTipPercentage] = useState<number | ''>('15'); // Default tip to 15%
+  const [individualShare, setIndividualShare] = useState<number | null>(null);
+
+  const calculateBillSplit = () => {
+      const bill = Number(totalBill);
+      const people = Number(numberOfPeople);
+      const tip = Number(tipPercentage);
+  
+      if (isNaN(bill) || isNaN(people) || people <= 0) {
+          setIndividualShare(null);
+          return;
+      }
+  
+      const totalWithTip = bill * (1 + tip / 100);
+      setIndividualShare(totalWithTip / people);
+  };
 
   const convertUnits = () => {
     if (unitAmount === '' || isNaN(Number(unitAmount))) {
@@ -250,6 +269,7 @@ export default function Home() {
                 <DropdownMenuItem onClick={() => setSelectedCalculator('GPA Calculator')}>GPA Calculator</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Time Zone Converter')}>Time Zone Converter</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Unit Converter')}>Unit Converter</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCalculator('Bill Split Calculator')}>Bill Split Calculator</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -450,98 +470,120 @@ export default function Home() {
         )}
 
         {selectedCalculator === 'Unit Converter' && (
-          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-black dark:text-white flex items-center gap-2">
-                <Target className="w-5 h-5 text-green-400" />
-                Unit Converter
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="unitCategory" className="text-white">Unit Category</Label>
-                  <Select
-                    value={selectedUnitCategory}
-                    onValueChange={(value) => {
-                      setSelectedUnitCategory(value);
-                      setFromUnit(unitCategories[value as keyof typeof unitCategories][0]);
-                      setToUnit(unitCategories[value as keyof typeof unitCategories][0]);
-                    }}
-                  >
-                    <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-gray-700 text-white border-gray-600">
-                      {Object.keys(unitCategories).map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+            <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+                <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
+                <div className="p-6 space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="unitCategory" className="text-gray-700 dark:text-gray-300">Unit Category</Label>
+                        <Select value={selectedUnitCategory} onValueChange={setSelectedUnitCategory}>
+                            <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                {Object.keys(unitCategories).map((category) => (
+                                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="unitAmount" className="text-gray-700 dark:text-gray-300">Amount</Label>
+                        <Input
+                            id="unitAmount"
+                            type="number"
+                            value={unitAmount}
+                            onChange={(e) => setUnitAmount(e.target.value)}
+                            placeholder="Enter amount"
+                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="fromUnit" className="text-gray-700 dark:text-gray-300">From Unit</Label>
+                        <Select value={fromUnit} onValueChange={setFromUnit}>
+                            <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <SelectValue placeholder="Select unit" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
+                                    <SelectItem key={unit} value={unit}>{unit}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="toUnit" className="text-gray-700 dark:text-gray-300">To Unit</Label>
+                        <Select value={toUnit} onValueChange={setToUnit}>
+                            <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <SelectValue placeholder="Select unit" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                                {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
+                                    <SelectItem key={unit} value={unit}>{unit}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <Button onClick={convertUnits} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Convert Unit
+                    </Button>
+                    {convertedUnit !== null && (
+                        <div className="mt-4 p-3 bg-gray-200 dark:bg-gray-700 rounded-md text-center text-lg font-semibold">
+                            Converted Amount: {convertedUnit.toFixed(4)}
+                        </div>
+                    )}
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="unitAmount" className="text-white">Amount</Label>
-                  <Input
-                    id="unitAmount"
-                    type="number"
-                    placeholder="e.g., 100"
-                    value={unitAmount}
-                    onChange={(e) => setUnitAmount(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="fromUnit" className="text-gray-700 dark:text-slate-300">From Unit</Label>
-                <Select
-                  value={fromUnit}
-                  onValueChange={setFromUnit}
-                >
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
-                    <SelectValue placeholder="Select a unit" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 text-white border-gray-600">
-                    {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {unit}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="toUnit" className="text-white">To Unit</Label>
-                <Select
-                  value={toUnit}
-                  onValueChange={setToUnit}
-                >
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
-                    <SelectValue placeholder="Select a unit" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 text-white border-gray-600">
-                    {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
-                      <SelectItem key={unit} value={unit}>
-                        {unit}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={convertUnits} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                Convert Unit
-              </Button>
-              {convertedUnit !== null && (
-                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
-                  <p className="text-sm font-medium">Converted Amount:</p>
-                  <p className="text-lg font-bold">{convertedUnit.toFixed(2)}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-      </main>
-    </div>
-  );
+            </Card>
+            )}
+
+            {selectedCalculator === 'Bill Split Calculator' && (
+                <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+                    <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
+                    <div className="p-6 space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="totalBill" className="text-gray-700 dark:text-gray-300">Total Bill Amount</Label>
+                            <Input
+                                id="totalBill"
+                                type="number"
+                                value={totalBill}
+                                onChange={(e) => setTotalBill(e.target.value)}
+                                placeholder="Enter total bill"
+                                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="numberOfPeople" className="text-gray-700 dark:text-gray-300">Number of People</Label>
+                            <Input
+                                id="numberOfPeople"
+                                type="number"
+                                value={numberOfPeople}
+                                onChange={(e) => setNumberOfPeople(e.target.value)}
+                                placeholder="Enter number of people"
+                                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="tipPercentage" className="text-gray-700 dark:text-gray-300">Tip Percentage (%)</Label>
+                            <Input
+                                id="tipPercentage"
+                                type="number"
+                                value={tipPercentage}
+                                onChange={(e) => setTipPercentage(e.target.value)}
+                                placeholder="Enter tip percentage"
+                                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                            />
+                        </div>
+                        <Button onClick={calculateBillSplit} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Calculate Share
+                        </Button>
+                        {individualShare !== null && (
+                            <div className="mt-4 p-3 bg-gray-200 dark:bg-gray-700 rounded-md text-center text-lg font-semibold">
+                                Each person pays: ${individualShare.toFixed(2)}
+                            </div>
+                        )}
+                    </div>
+                </Card>
+            )}
+        </main>
+        </div>
+    )
 }
