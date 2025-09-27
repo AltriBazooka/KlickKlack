@@ -92,9 +92,16 @@ export default function Home() {
   const [dob, setDob] = useState('');
   const [age, setAge] = useState(0);
 
-  const [weight, setWeight] = useState<number | ''>('');
-  const [height, setHeight] = useState<number | ''>('');
-  
+  const [weight, setWeight] = useState<number | string>('');
+  const [height, setHeight] = useState<number | string>('');
+  const [sex, setSex] = useState<'male' | 'female' | ''>('');
+  const [activityLevel, setActivityLevel] = useState<'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extra_active' | ''>('');
+
+  // Sleep Calculator states
+  const [wakeUpTime, setWakeUpTime] = useState('');
+  const [sleepDuration, setSleepDuration] = useState<number | ''>('');
+  const [bedTime, setBedTime] = useState('');
+
   useEffect(() => {
       if (dob) {
           const birthDate = new Date(dob);
@@ -113,110 +120,140 @@ export default function Home() {
             const bmi = Number(weight) / (Number(height) / 100) ** 2;
             // You can add more logic here for BMI categories if needed
         }
-    }, [weight, height]);
+     }, [weight, height]);
 
+    const [courses, setCourses] = useState<Array<{ name: string; credits: number; grade: string }>>([]);
+    const [newCourseName, setNewCourseName] = useState("");
+    const [newCourseCredits, setNewCourseCredits] = useState<number | string>("");
+    const [newCourseGrade, setNewCourseGrade] = useState("");
+    const [gpa, setGpa] = useState<string | null>(null);
 
+    const gradeToPoints: { [key: string]: number } = {
+      "A+": 4.0,
+      A: 4.0,
+      "A-": 3.7,
+      "B+": 3.3,
+      B: 3.0,
+      "B-": 2.7,
+      "C+": 2.3,
+      C: 2.0,
+      "C-": 1.7,
+      "D+": 1.3,
+      D: 1.0,
+      "D-": 0.7,
+      F: 0.0,
+    };
 
-  const convertUnits = () => {
-    if (unitAmount === '' || isNaN(Number(unitAmount))) {
-      setConvertedUnit(null);
-      return;
+    const addCourse = () => {
+      if (newCourseName && newCourseCredits && newCourseGrade) {
+        setCourses([...courses, { name: newCourseName, credits: Number(newCourseCredits), grade: newCourseGrade }]);
+        setNewCourseName("");
+        setNewCourseCredits("");
+        setNewCourseGrade("");
+      }
+    };
+
+    useEffect(() => {
+        if (wakeUpTime && sleepDuration) {
+            const [wakeUpHour, wakeUpMinute] = wakeUpTime.split(':').map(Number);
+            const wakeUpDate = new Date();
+            wakeUpDate.setHours(wakeUpHour, wakeUpMinute, 0, 0);
+
+            const sleepDurationMs = Number(sleepDuration) * 60 * 60 * 1000;
+            const bedTimeDate = new Date(wakeUpDate.getTime() - sleepDurationMs);
+
+            let hours = bedTimeDate.getHours();
+            const minutes = bedTimeDate.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+            setBedTime(`${hours}:${formattedMinutes} ${ampm}`);
+        }
+    }, [wakeUpTime, sleepDuration]);
+
+  const calculateHealthMetrics = () => {
+    if (weight && height && age && sex && activityLevel) {
+      const bmi = Number(weight) / (Number(height) / 100) ** 2;
+      setBmi(bmi);
+
+      let bmiCategory = "";
+      if (bmi < 18.5) bmiCategory = "Underweight";
+      else if (bmi >= 18.5 && bmi < 24.9) bmiCategory = "Normal weight";
+      else if (bmi >= 25 && bmi < 29.9) bmiCategory = "Overweight";
+      else bmiCategory = "Obese";
+      setBmiCategory(bmiCategory);
+
+      let bmr = 0;
+      if (sex === "male") {
+        bmr = 88.362 + 13.397 * Number(weight) + 4.799 * Number(height) - 5.677 * Number(age);
+      } else {
+        bmr = 447.593 + 9.247 * Number(weight) + 3.098 * Number(height) - 4.330 * Number(age);
+      }
+      setBmr(bmr);
+
+      let tdee = 0;
+      switch (activityLevel) {
+        case "sedentary":
+          tdee = bmr * 1.2;
+          break;
+        case "lightly_active":
+          tdee = bmr * 1.375;
+          break;
+        case "moderately_active":
+          tdee = bmr * 1.55;
+          break;
+        case "very_active":
+          tdee = bmr * 1.725;
+          break;
+        case "extra_active":
+          tdee = bmr * 1.9;
+          break;
+        default:
+          tdee = 0;
+      }
+      setTdee(tdee);
     }
-
-    const amount = Number(unitAmount);
-    let result: number | null = null;
-
-    if (selectedUnitCategory === "Temperature") {
-      const from = fromUnit as keyof typeof conversionRates["Temperature"];
-      const to = toUnit as keyof typeof conversionRates["Temperature"];
-
-      if (from === to) {
-        result = amount;
-      } else if (conversionRates.Temperature[from] && (conversionRates.Temperature[from][to] as Function)) {
-        result = (conversionRates.Temperature[from][to] as Function)(amount);
-      } else if (conversionRates.Temperature[to] && (conversionRates.Temperature[to][from] as Function)) {
-        // Handle inverse conversion if direct is not available
-        if (from === "celsius" && to === "fahrenheit") result = (amount * 9/5) + 32;
-        else if (from === "fahrenheit" && to === "celsius") result = (amount - 32) * 5/9;
-        else if (from === "celsius" && to === "kelvin") result = amount + 273.15;
-        else if (from === "kelvin" && to === "celsius") result = amount - 273.15;
-        else if (from === "fahrenheit" && to === "kelvin") result = (amount - 32) * 5/9 + 273.15;
-        else if (from === "kelvin" && to === "fahrenheit") result = (amount - 273.15) * 9/5 + 32;
-      }
-    } else {
-      const rates = conversionRates[selectedUnitCategory as keyof typeof conversionRates];
-      if (!rates) {
-        setConvertedUnit(null);
-        return;
-      }
-
-      const from = fromUnit as keyof typeof rates;
-      const to = toUnit as keyof typeof rates;
-
-      if (from === to) {
-        result = amount;
-      } else if (rates[from] && (rates[from][to] as number)) {
-        result = amount * (rates[from][to] as number);
-      } else if (rates[to] && (rates[to][from] as number)) {
-        result = amount / (rates[to][from] as number);
-      }
-    }
-
-    setConvertedUnit(result);
   };
 
-  const [courses, setCourses] = useState<Array<{ name: string; credits: number; grade: string }>>([]);
-  const [newCourseName, setNewCourseName] = useState("");
-  const [newCourseCredits, setNewCourseCredits] = useState<number | "">("");
-  const [newCourseGrade, setNewCourseGrade] = useState("");
-  const [gpa, setGpa] = useState<string | null>(null);
+  const calculateBedTime = () => {
+    if (wakeUpTime && sleepDuration) {
+      const [wakeUpHour, wakeUpMinute] = wakeUpTime.split(':').map(Number);
+      const wakeUpDate = new Date();
+      wakeUpDate.setHours(wakeUpHour, wakeUpMinute, 0, 0);
 
-  const gradeToPoints: { [key: string]: number } = {
-    "A+": 4.0,
-    A: 4.0,
-    "A-": 3.7,
-    "B+": 3.3,
-    B: 3.0,
-    "B-": 2.7,
-    "C+": 2.3,
-    C: 2.0,
-    "C-": 1.7,
-    "D+": 1.3,
-    D: 1.0,
-    "D-": 0.7,
-    F: 0.0,
-  };
+      const sleepDurationMs = Number(sleepDuration) * 60 * 60 * 1000;
+      const bedTimeDate = new Date(wakeUpDate.getTime() - sleepDurationMs);
 
-  const addCourse = () => {
-    if (newCourseName && newCourseCredits && newCourseGrade) {
-      setCourses([...courses, { name: newCourseName, credits: Number(newCourseCredits), grade: newCourseGrade }]);
-      setNewCourseName("");
-      setNewCourseCredits("");
-      setNewCourseGrade("");
+      const bedTimeHour = bedTimeDate.getHours().toString().padStart(2, '0');
+      const bedTimeMinute = bedTimeDate.getMinutes().toString().padStart(2, '0');
+
+      setBedTime(`${bedTimeHour}:${bedTimeMinute}`);
     }
   };
 
   const calculateGPA = () => {
     if (courses.length === 0) {
-      setGpa("0.00");
+      setGpa(null);
       return;
     }
 
-    let totalPoints = 0;
     let totalCredits = 0;
+    let totalGradePoints = 0;
 
     courses.forEach((course) => {
-      const points = gradeToPoints[course.grade.toUpperCase()];
+      const points = gradeToPoints[course.grade];
       if (points !== undefined) {
-        totalPoints += points * course.credits;
         totalCredits += course.credits;
+        totalGradePoints += points * course.credits;
       }
     });
 
     if (totalCredits === 0) {
-      setGpa("N/A");
+      setGpa("0.00");
     } else {
-      setGpa((totalPoints / totalCredits).toFixed(2));
+      setGpa((totalGradePoints / totalCredits).toFixed(2));
     }
   };
 
@@ -287,6 +324,7 @@ export default function Home() {
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Bill Split Calculator')}>Bill Split Calculator</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Age Calculator')}>Age Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Health Calculator')}>Health Calculator</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Sleep Calculator')}>Sleep Calculator</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -597,7 +635,7 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Age Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Age Calculator</CardTitle>
                     <div className="p-6 space-y-4">
                         <div className="space-y-2">
@@ -618,46 +656,105 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Health Calculator' && (
-          <Card className="w-full max-w-md bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
-            <CardHeader>
-              <CardTitle>Health Calculator</CardTitle>
-              <CardDescription>Calculate your BMI and other health metrics.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="weight">Weight (kg)</Label>
-                  <Input
-                    id="weight"
-                    type="number"
-                    value={weight}
-                    onChange={(e) => setWeight(e.target.value === '' ? '' : Number(e.target.value))}
-                    placeholder="Enter weight in kg"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="height">Height (cm)</Label>
-                  <Input
-                    id="height"
-                    type="number"
-                    value={height}
-                    onChange={(e) => setHeight(e.target.value === '' ? '' : Number(e.target.value))}
-                    placeholder="Enter height in cm"
-                  />
-                </div>
-                {weight && height && (
-                  <div className="grid gap-2">
-                    <Label>BMI</Label>
-                    <Badge className="text-lg">
-                      {(Number(weight) / (Number(height) / 100) ** 2).toFixed(2)}
-                    </Badge>
-                  </div>
-                )}
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Health Calculator</CardTitle>
+            <CardContent className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="weight" className="text-gray-700 dark:text-gray-300">Weight (kg)</Label>
+                <Input
+                  id="weight"
+                  type="number"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  placeholder="Enter weight in kg"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="height" className="text-gray-700 dark:text-gray-300">Height (cm)</Label>
+                <Input
+                  id="height"
+                  type="number"
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                  placeholder="Enter height in cm"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sex" className="text-gray-700 dark:text-gray-300">Sex</Label>
+                <Select value={sex} onValueChange={(value: 'male' | 'female') => setSex(value)}>
+                  <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <SelectValue placeholder="Select sex" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="activityLevel" className="text-gray-700 dark:text-gray-300">Activity Level</Label>
+                <Select value={activityLevel} onValueChange={(value: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extra_active') => setActivityLevel(value)}>
+                  <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <SelectValue placeholder="Select activity level" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
+                    <SelectItem value="sedentary">Sedentary (little or no exercise)</SelectItem>
+                    <SelectItem value="lightly_active">Lightly Active (light exercise/sports 1-3 days/week)</SelectItem>
+                    <SelectItem value="moderately_active">Moderately Active (moderate exercise/sports 3-5 days/week)</SelectItem>
+                    <SelectItem value="very_active">Very Active (hard exercise/sports 6-7 days a week)</SelectItem>
+                    <SelectItem value="extra_active">Extra Active (very hard exercise/physical job)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={calculateHealthMetrics} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Calculate Health Metrics</Button>
+              {bmi && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">BMI: <span className="font-bold">{bmi.toFixed(2)}</span> ({bmiCategory})</p>
+                  {bmr && <p className="text-sm font-medium">BMR: <span className="font-bold">{bmr.toFixed(2)}</span> calories/day</p>}
+                  {tdee && <p className="text-sm font-medium">TDEE: <span className="font-bold">{tdee.toFixed(2)}</span> calories/day</p>}
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
-        </main>
-        </div>
-    )
+
+        {selectedCalculator === 'Sleep Calculator' && (
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Sleep Calculator</CardTitle>
+            <CardContent className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="wakeUpTime" className="text-gray-700 dark:text-gray-300">Desired Wake Up Time</Label>
+                <Input
+                  id="wakeUpTime"
+                  type="time"
+                  value={wakeUpTime}
+                  onChange={(e) => setWakeUpTime(e.target.value)}
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sleepDuration" className="text-gray-700 dark:text-gray-300">Desired Sleep Duration (hours)</Label>
+                <Input
+                  id="sleepDuration"
+                  type="number"
+                  value={sleepDuration}
+                  onChange={(e) => setSleepDuration(e.target.value)}
+                  placeholder="Enter desired sleep duration in hours"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                />
+              </div>
+              {bedTime && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Recommended Bed Time:</p>
+                  <p className="text-lg font-bold">{bedTime}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+      </main>
+    </div>
+  )
 }
