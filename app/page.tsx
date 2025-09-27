@@ -53,8 +53,8 @@ export default function Home() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Currency Converter')}>Currency Converter</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setSelectedCalculator('GPA Converter')}>GPA Converter</DropdownMenuItem>
-                <DropdownMenuItem>Category 3</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCalculator('GPA Calculator')}>GPA Calculator</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCalculator('Time Zone Converter')}>Time Zone Converter</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -123,17 +123,33 @@ export default function Home() {
           </Card>
         )}
 
-        {selectedCalculator === 'GPA Converter' && (
+        {selectedCalculator === 'GPA Calculator' && (
           <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
             <CardHeader>
               <CardTitle className="text-black dark:text-white flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-400" />
-                GPA Converter
+                GPA Calculator
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-700 dark:text-slate-300">GPA Converter content goes here.</p>
+              <p className="text-gray-700 dark:text-slate-300">GPA Calculator content goes here.</p>
               {/* Add GPA Converter specific input fields and logic here */}
+            </CardContent>
+          </Card>
+        )}
+
+        {selectedCalculator === 'Time Zone Converter' && (
+          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-black dark:text-white flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-400" />
+                Time Zone Converter
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                {/* Add Time Zone Converter specific input fields and logic here */}
+              </div>
             </CardContent>
           </Card>
         )}
