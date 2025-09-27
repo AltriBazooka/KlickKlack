@@ -39,6 +39,98 @@ export default function Home() {
   const [timeToConvert, setTimeToConvert] = useState("");
   const [convertedTime, setConvertedTime] = useState("");
 
+  const [selectedUnitCategory, setSelectedUnitCategory] = useState("Length");
+  const unitCategories = {
+    Length: ["meters", "feet", "kilometers", "miles"],
+    Weight: ["kilograms", "pounds", "grams", "ounces"],
+    Temperature: ["celsius", "fahrenheit", "kelvin"],
+    Speed: ["km/h", "mph", "m/s"],
+    Volume: ["liters", "gallons", "milliliters"]
+  };
+  
+  const conversionRates = {
+    Length: {
+      meters: { feet: 3.28084, kilometers: 0.001, miles: 0.000621371 },
+      feet: { meters: 0.3048, kilometers: 0.0003048, miles: 0.000189394 },
+      kilometers: { meters: 1000, feet: 3280.84, miles: 0.621371 },
+      miles: { meters: 1609.34, feet: 5280, kilometers: 1.60934 }
+    },
+    Weight: {
+      kilograms: { pounds: 2.20462, grams: 1000, ounces: 35.274 },
+      pounds: { kilograms: 0.453592, grams: 453.592, ounces: 16 },
+      grams: { kilograms: 0.001, pounds: 0.00220462, ounces: 0.035274 },
+      ounces: { kilograms: 0.0283495, pounds: 0.0625, grams: 28.3495 }
+    },
+    Temperature: {
+      celsius: { fahrenheit: (c) => (c * 9/5) + 32, kelvin: (c) => c + 273.15 },
+      fahrenheit: { celsius: (f) => (f - 32) * 5/9, kelvin: (f) => (f - 32) * 5/9 + 273.15 },
+      kelvin: { celsius: (k) => k - 273.15, fahrenheit: (k) => (k - 273.15) * 9/5 + 32 }
+    },
+    Speed: {
+      "km/h": { mph: 0.621371, "m/s": 0.277778 },
+      mph: { "km/h": 1.60934, "m/s": 0.44704 },
+      "m/s": { "km/h": 3.6, mph: 2.23694 }
+    },
+    Volume: {
+      liters: { gallons: 0.264172, milliliters: 1000 },
+      gallons: { liters: 3.78541, milliliters: 3785.41 },
+      milliliters: { liters: 0.001, gallons: 0.000264172 }
+    }
+  };
+  
+  const [fromUnit, setFromUnit] = useState("meters");
+  const [toUnit, setToUnit] = useState("feet");
+  const [unitAmount, setUnitAmount] = useState<number | ''>('');
+  const [convertedUnit, setConvertedUnit] = useState<number | null>(null);
+
+  const convertUnits = () => {
+    if (unitAmount === '' || isNaN(Number(unitAmount))) {
+      setConvertedUnit(null);
+      return;
+    }
+
+    const amount = Number(unitAmount);
+    let result: number | null = null;
+
+    if (selectedUnitCategory === "Temperature") {
+      const from = fromUnit as keyof typeof conversionRates["Temperature"];
+      const to = toUnit as keyof typeof conversionRates["Temperature"];
+
+      if (from === to) {
+        result = amount;
+      } else if (conversionRates.Temperature[from] && (conversionRates.Temperature[from][to] as Function)) {
+        result = (conversionRates.Temperature[from][to] as Function)(amount);
+      } else if (conversionRates.Temperature[to] && (conversionRates.Temperature[to][from] as Function)) {
+        // Handle inverse conversion if direct is not available
+        if (from === "celsius" && to === "fahrenheit") result = (amount * 9/5) + 32;
+        else if (from === "fahrenheit" && to === "celsius") result = (amount - 32) * 5/9;
+        else if (from === "celsius" && to === "kelvin") result = amount + 273.15;
+        else if (from === "kelvin" && to === "celsius") result = amount - 273.15;
+        else if (from === "fahrenheit" && to === "kelvin") result = (amount - 32) * 5/9 + 273.15;
+        else if (from === "kelvin" && to === "fahrenheit") result = (amount - 273.15) * 9/5 + 32;
+      }
+    } else {
+      const rates = conversionRates[selectedUnitCategory as keyof typeof conversionRates];
+      if (!rates) {
+        setConvertedUnit(null);
+        return;
+      }
+
+      const from = fromUnit as keyof typeof rates;
+      const to = toUnit as keyof typeof rates;
+
+      if (from === to) {
+        result = amount;
+      } else if (rates[from] && (rates[from][to] as number)) {
+        result = amount * (rates[from][to] as number);
+      } else if (rates[to] && (rates[to][from] as number)) {
+        result = amount / (rates[to][from] as number);
+      }
+    }
+
+    setConvertedUnit(result);
+  };
+
   const [courses, setCourses] = useState<Array<{ name: string; credits: number; grade: string }>>([]);
   const [newCourseName, setNewCourseName] = useState("");
   const [newCourseCredits, setNewCourseCredits] = useState<number | "">("");
@@ -157,6 +249,7 @@ export default function Home() {
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Currency Converter')}>Currency Converter</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('GPA Calculator')}>GPA Calculator</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Time Zone Converter')}>Time Zone Converter</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCalculator('Unit Converter')}>Unit Converter</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -350,6 +443,99 @@ export default function Home() {
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
                   <p className="text-sm font-medium">Converted Time:</p>
                   <p className="text-lg font-bold">{convertedTime}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {selectedCalculator === 'Unit Converter' && (
+          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-black dark:text-white flex items-center gap-2">
+                <Target className="w-5 h-5 text-green-400" />
+                Unit Converter
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="unitCategory" className="text-white">Unit Category</Label>
+                  <Select
+                    value={selectedUnitCategory}
+                    onValueChange={(value) => {
+                      setSelectedUnitCategory(value);
+                      setFromUnit(unitCategories[value as keyof typeof unitCategories][0]);
+                      setToUnit(unitCategories[value as keyof typeof unitCategories][0]);
+                    }}
+                  >
+                    <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-700 text-white border-gray-600">
+                      {Object.keys(unitCategories).map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="unitAmount" className="text-white">Amount</Label>
+                  <Input
+                    id="unitAmount"
+                    type="number"
+                    placeholder="e.g., 100"
+                    value={unitAmount}
+                    onChange={(e) => setUnitAmount(e.target.value === '' ? '' : Number(e.target.value))}
+                    className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="fromUnit" className="text-gray-700 dark:text-slate-300">From Unit</Label>
+                <Select
+                  value={fromUnit}
+                  onValueChange={setFromUnit}
+                >
+                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                    <SelectValue placeholder="Select a unit" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 text-white border-gray-600">
+                    {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
+                      <SelectItem key={unit} value={unit}>
+                        {unit}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="toUnit" className="text-white">To Unit</Label>
+                <Select
+                  value={toUnit}
+                  onValueChange={setToUnit}
+                >
+                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                    <SelectValue placeholder="Select a unit" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 text-white border-gray-600">
+                    {unitCategories[selectedUnitCategory as keyof typeof unitCategories].map((unit) => (
+                      <SelectItem key={unit} value={unit}>
+                        {unit}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={convertUnits} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Convert Unit
+              </Button>
+              {convertedUnit !== null && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Converted Amount:</p>
+                  <p className="text-lg font-bold">{convertedUnit.toFixed(2)}</p>
                 </div>
               )}
             </CardContent>
