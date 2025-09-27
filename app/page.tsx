@@ -297,23 +297,28 @@ export default function Home() {
         )}
 
         {selectedCalculator === "Time Zone Converter" && (
-          <Card className="w-full max-w-md">
+          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
             <CardHeader>
+              <CardTitle className="text-black dark:text-white flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-400" />
+                Time Zone Converter
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="timeToConvert">Time to Convert</Label>
+                <Label htmlFor="timeToConvert" className="text-gray-700 dark:text-slate-300">Time to Convert</Label>
                 <Input
                   id="timeToConvert"
                   type="datetime-local"
                   value={timeToConvert}
                   onChange={(e) => setTimeToConvert(e.target.value)}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="fromTimeZone">From Time Zone</Label>
+                <Label htmlFor="fromTimeZone" className="text-gray-700 dark:text-slate-300">From Time Zone</Label>
                 <Select value={fromTimeZone} onValueChange={setFromTimeZone}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400">
                     <SelectValue placeholder="Select a time zone" />
                   </SelectTrigger>
                   <SelectContent>
@@ -326,9 +331,9 @@ export default function Home() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="toTimeZone">To Time Zone</Label>
+                <Label htmlFor="toTimeZone" className="text-gray-700 dark:text-slate-300">To Time Zone</Label>
                 <Select value={toTimeZone} onValueChange={setToTimeZone}>
-                  <SelectTrigger className="w-full">
+                  <SelectTrigger className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400">
                     <SelectValue placeholder="Select a time zone" />
                   </SelectTrigger>
                   <SelectContent>
@@ -340,7 +345,7 @@ export default function Home() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={convertTime} className="w-full">Convert Time</Button>
+              <Button onClick={convertTime} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Convert Time</Button>
               {convertedTime && (
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
                   <p className="text-sm font-medium">Converted Time:</p>
