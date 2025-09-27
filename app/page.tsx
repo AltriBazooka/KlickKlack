@@ -83,24 +83,39 @@ export default function Home() {
   const [unitAmount, setUnitAmount] = useState<number | ''>('');
   const [convertedUnit, setConvertedUnit] = useState<number | null>(null);
   
-  const [totalBill, setTotalBill] = useState<number | ''>('');
-  const [numberOfPeople, setNumberOfPeople] = useState<number | ''>('');
-  const [tipPercentage, setTipPercentage] = useState<number | ''>('15'); // Default tip to 15%
-  const [individualShare, setIndividualShare] = useState<number | null>(null);
+  const [billAmount, setBillAmount] = useState<number | ''>('');
+    const [numPeople, setNumPeople] = useState<number | ''>('');
+  const [tipPercentage, setTipPercentage] = useState(15);
+  const billPerPerson = (parseFloat(billAmount) * (1 + tipPercentage / 100)) / parseInt(numPeople);
 
-  const calculateBillSplit = () => {
-      const bill = Number(totalBill);
-      const people = Number(numberOfPeople);
-      const tip = Number(tipPercentage);
+  // Age Calculator states
+  const [dob, setDob] = useState('');
+  const [age, setAge] = useState(0);
+
+  const [weight, setWeight] = useState<number | ''>('');
+  const [height, setHeight] = useState<number | ''>('');
   
-      if (isNaN(bill) || isNaN(people) || people <= 0) {
-          setIndividualShare(null);
-          return;
+  useEffect(() => {
+      if (dob) {
+          const birthDate = new Date(dob);
+          const today = new Date();
+          let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+          const monthDifference = today.getMonth() - birthDate.getMonth();
+          if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+              calculatedAge--;
+          }
+          setAge(calculatedAge);
       }
-  
-      const totalWithTip = bill * (1 + tip / 100);
-      setIndividualShare(totalWithTip / people);
-  };
+  }, [dob]);
+
+    useEffect(() => {
+        if (weight && height) {
+            const bmi = Number(weight) / (Number(height) / 100) ** 2;
+            // You can add more logic here for BMI categories if needed
+        }
+    }, [weight, height]);
+
+
 
   const convertUnits = () => {
     if (unitAmount === '' || isNaN(Number(unitAmount))) {
@@ -270,6 +285,8 @@ export default function Home() {
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Time Zone Converter')}>Time Zone Converter</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Unit Converter')}>Unit Converter</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Bill Split Calculator')}>Bill Split Calculator</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedCalculator('Age Calculator')}>Age Calculator</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Health Calculator')}>Health Calculator</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -470,7 +487,7 @@ export default function Home() {
         )}
 
         {selectedCalculator === 'Unit Converter' && (
-            <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+            <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
                 <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
                 <div className="p-6 space-y-4">
                     <div className="space-y-2">
@@ -536,33 +553,33 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Bill Split Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
                     <div className="p-6 space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="totalBill" className="text-gray-700 dark:text-gray-300">Total Bill Amount</Label>
+                            <Label htmlFor="billAmount" className="text-gray-700 dark:text-gray-300">Bill Amount</Label>
                             <Input
-                                id="totalBill"
+                                id="billAmount"
                                 type="number"
-                                value={totalBill}
-                                onChange={(e) => setTotalBill(e.target.value)}
-                                placeholder="Enter total bill"
+                                value={billAmount}
+                                onChange={(e) => setBillAmount(e.target.value)}
+                                placeholder="Enter bill amount"
                                 className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="numberOfPeople" className="text-gray-700 dark:text-gray-300">Number of People</Label>
+                            <Label htmlFor="numPeople" className="text-gray-700 dark:text-gray-300">Number of People</Label>
                             <Input
-                                id="numberOfPeople"
+                                id="numPeople"
                                 type="number"
-                                value={numberOfPeople}
-                                onChange={(e) => setNumberOfPeople(e.target.value)}
+                                value={numPeople}
+                                onChange={(e) => setNumPeople(e.target.value)}
                                 placeholder="Enter number of people"
                                 className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="tipPercentage" className="text-gray-700 dark:text-gray-300">Tip Percentage (%)</Label>
+                            <Label htmlFor="tipPercentage" className="text-gray-700 dark:text-gray-300">Tip Percentage</Label>
                             <Input
                                 id="tipPercentage"
                                 type="number"
@@ -572,17 +589,74 @@ export default function Home() {
                                 className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
                             />
                         </div>
-                        <Button onClick={calculateBillSplit} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Calculate Share
-                        </Button>
-                        {individualShare !== null && (
-                            <div className="mt-4 p-3 bg-gray-200 dark:bg-gray-700 rounded-md text-center text-lg font-semibold">
-                                Each person pays: ${individualShare.toFixed(2)}
-                            </div>
-                        )}
+                        <div className="text-center text-lg font-semibold mt-4">
+                            Each person pays: ${billPerPerson.toFixed(2)}
+                        </div>
                     </div>
                 </Card>
             )}
+
+            {selectedCalculator === 'Age Calculator' && (
+                <Card className="w-full max-w-md mx-auto bg-gray-100 dark:bg-gray-900 text-black dark:text-white border-gray-300 dark:border-gray-700 shadow-lg rounded-lg">
+                    <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Age Calculator</CardTitle>
+                    <div className="p-6 space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="dob" className="text-gray-700 dark:text-gray-300">Date of Birth</Label>
+                            <Input
+                                id="dob"
+                                type="date"
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
+                            />
+                        </div>
+                        <div className="text-center text-lg font-semibold mt-4">
+                            Your age is: {age} years
+                        </div>
+                    </div>
+                </Card>
+            )}
+
+            {selectedCalculator === 'Health Calculator' && (
+          <Card className="w-full max-w-md bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <CardHeader>
+              <CardTitle>Health Calculator</CardTitle>
+              <CardDescription>Calculate your BMI and other health metrics.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="weight">Weight (kg)</Label>
+                  <Input
+                    id="weight"
+                    type="number"
+                    value={weight}
+                    onChange={(e) => setWeight(e.target.value === '' ? '' : Number(e.target.value))}
+                    placeholder="Enter weight in kg"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="height">Height (cm)</Label>
+                  <Input
+                    id="height"
+                    type="number"
+                    value={height}
+                    onChange={(e) => setHeight(e.target.value === '' ? '' : Number(e.target.value))}
+                    placeholder="Enter height in cm"
+                  />
+                </div>
+                {weight && height && (
+                  <div className="grid gap-2">
+                    <Label>BMI</Label>
+                    <Badge className="text-lg">
+                      {(Number(weight) / (Number(height) / 100) ** 2).toFixed(2)}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
         </main>
         </div>
     )
