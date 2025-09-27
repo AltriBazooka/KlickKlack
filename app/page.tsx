@@ -83,6 +83,112 @@ export default function Home() {
   const [unitAmount, setUnitAmount] = useState<number | ''>('');
   const [convertedUnit, setConvertedUnit] = useState<number | null>(null);
   
+  const unitConversionRates = {
+      Length: {
+          meters: {
+              feet: 3.28084,
+              inches: 39.3701,
+              centimeters: 100,
+          },
+          feet: {
+              meters: 0.3048,
+              inches: 12,
+              centimeters: 30.48,
+          },
+          inches: {
+              meters: 0.0254,
+              feet: 0.0833333,
+              centimeters: 2.54,
+          },
+          centimeters: {
+              meters: 0.01,
+              feet: 0.0328084,
+              inches: 0.393701,
+          },
+      },
+      Weight: {
+          kilograms: {
+              pounds: 2.20462,
+              grams: 1000,
+              ounces: 35.274,
+          },
+          pounds: {
+              kilograms: 0.453592,
+              grams: 453.592,
+              ounces: 16,
+          },
+          grams: {
+              kilograms: 0.001,
+              pounds: 0.00220462,
+              ounces: 0.035274,
+          },
+          ounces: {
+              kilograms: 0.0283495,
+              pounds: 0.0625,
+              grams: 28.3495,
+          },
+      },
+      Temperature: {
+          celsius: {
+              fahrenheit: (value: number) => (value * 9 / 5) + 32,
+              kelvin: (value: number) => value + 273.15,
+          },
+          fahrenheit: {
+              celsius: (value: number) => (value - 32) * 5 / 9,
+              kelvin: (value: number) => (value - 32) * 5 / 9 + 273.15,
+          },
+          kelvin: {
+              celsius: (value: number) => value - 273.15,
+              fahrenheit: (value: number) => (value - 273.15) * 9 / 5 + 32,
+          },
+      },
+      Volume: {
+          liters: {
+              gallons: 0.264172,
+              milliliters: 1000,
+              cubic_meters: 0.001,
+          },
+          gallons: {
+              liters: 3.78541,
+              milliliters: 3785.41,
+              cubic_meters: 0.00378541,
+          },
+          milliliters: {
+              liters: 0.001,
+              gallons: 0.000264172,
+              cubic_meters: 0.000001,
+          },
+          cubic_meters: {
+              liters: 1000,
+              gallons: 264.172,
+              milliliters: 1000000,
+          },
+      },
+  };
+  
+  const convertUnits = () => {
+      if (unitAmount === '' || !selectedUnitCategory || !fromUnit || !toUnit) {
+          setConvertedUnit(null);
+          return;
+      }
+  
+      const amountNum = parseFloat(unitAmount as string);
+      let result: number | null = null;
+  
+      if (selectedUnitCategory === 'Temperature') {
+          const conversionFunction = unitConversionRates.Temperature[fromUnit as keyof typeof unitConversionRates.Temperature][toUnit as keyof typeof unitConversionRates.Temperature];
+          if (typeof conversionFunction === 'function') {
+              result = conversionFunction(amountNum);
+          }
+      } else {
+          const rates = unitConversionRates[selectedUnitCategory as keyof typeof unitConversionRates][fromUnit as keyof typeof unitConversionRates.Length];
+          if (rates && rates[toUnit as keyof typeof rates]) {
+              result = amountNum * (rates[toUnit as keyof typeof rates] as number);
+          }
+      }
+      setConvertedUnit(result);
+  };
+
   const [billAmount, setBillAmount] = useState<number | ''>('');
     const [numPeople, setNumPeople] = useState<number | ''>('');
   const [tipPercentage, setTipPercentage] = useState(15);
@@ -96,6 +202,10 @@ export default function Home() {
   const [height, setHeight] = useState<number | string>('');
   const [sex, setSex] = useState<'male' | 'female' | ''>('');
   const [activityLevel, setActivityLevel] = useState<'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extra_active' | ''>('');
+const [bmi, setBmi] = useState<number | null>(null);
+const [bmiCategory, setBmiCategory] = useState<string | null>(null);
+const [bmr, setBmr] = useState<number | null>(null);
+const [tdee, setTdee] = useState<number | null>(null);
 
   // Sleep Calculator states
   const [wakeUpTime, setWakeUpTime] = useState('');
@@ -117,8 +227,20 @@ export default function Home() {
 
     useEffect(() => {
         if (weight && height) {
-            const bmi = Number(weight) / (Number(height) / 100) ** 2;
-            // You can add more logic here for BMI categories if needed
+            const calculatedBmi = Number(weight) / (Number(height) / 100) ** 2;
+            setBmi(calculatedBmi);
+
+            let category = '';
+            if (calculatedBmi < 18.5) {
+                category = 'Underweight';
+            } else if (calculatedBmi >= 18.5 && calculatedBmi < 24.9) {
+                category = 'Normal weight';
+            } else if (calculatedBmi >= 25 && calculatedBmi < 29.9) {
+                category = 'Overweight';
+            } else {
+                category = 'Obesity';
+            }
+            setBmiCategory(category);
         }
      }, [weight, height]);
 
@@ -175,15 +297,16 @@ export default function Home() {
 
   const calculateHealthMetrics = () => {
     if (weight && height && age && sex && activityLevel) {
-      const bmi = Number(weight) / (Number(height) / 100) ** 2;
-      setBmi(bmi);
+      // BMI and bmiCategory are already calculated in useEffect
+      // const bmi = Number(weight) / (Number(height) / 100) ** 2;
+      // setBmi(bmi);
 
-      let bmiCategory = "";
-      if (bmi < 18.5) bmiCategory = "Underweight";
-      else if (bmi >= 18.5 && bmi < 24.9) bmiCategory = "Normal weight";
-      else if (bmi >= 25 && bmi < 29.9) bmiCategory = "Overweight";
-      else bmiCategory = "Obese";
-      setBmiCategory(bmiCategory);
+      // let bmiCategory = "";
+      // if (bmi < 18.5) bmiCategory = "Underweight";
+      // else if (bmi >= 18.5 && bmi < 24.9) bmiCategory = "Normal weight";
+      // else if (bmi >= 25 && bmi < 29.9) bmiCategory = "Overweight";
+      // else bmiCategory = "Obese";
+      // setBmiCategory(bmiCategory);
 
       let bmr = 0;
       if (sex === "male") {
@@ -525,7 +648,7 @@ export default function Home() {
         )}
 
         {selectedCalculator === 'Unit Converter' && (
-            <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+            <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
                 <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
                 <div className="p-6 space-y-4">
                     <div className="space-y-2">
@@ -591,7 +714,7 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Bill Split Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
                     <div className="p-6 space-y-4">
                         <div className="space-y-2">
@@ -635,7 +758,7 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Age Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Age Calculator</CardTitle>
                     <div className="p-6 space-y-4">
                         <div className="space-y-2">
@@ -656,7 +779,7 @@ export default function Home() {
             )}
 
             {selectedCalculator === 'Health Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
             <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Health Calculator</CardTitle>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
@@ -708,7 +831,6 @@ export default function Home() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={calculateHealthMetrics} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Calculate Health Metrics</Button>
               {bmi && (
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
                   <p className="text-sm font-medium">BMI: <span className="font-bold">{bmi.toFixed(2)}</span> ({bmiCategory})</p>
@@ -721,7 +843,7 @@ export default function Home() {
         )}
 
         {selectedCalculator === 'Sleep Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
             <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Sleep Calculator</CardTitle>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
