@@ -39,6 +39,65 @@ export default function Home() {
   const [timeToConvert, setTimeToConvert] = useState("");
   const [convertedTime, setConvertedTime] = useState("");
 
+  const [courses, setCourses] = useState<Array<{ name: string; credits: number; grade: string }>>([]);
+  const [newCourseName, setNewCourseName] = useState("");
+  const [newCourseCredits, setNewCourseCredits] = useState<number | "">("");
+  const [newCourseGrade, setNewCourseGrade] = useState("");
+  const [gpa, setGpa] = useState<string | null>(null);
+
+  const gradeToPoints: { [key: string]: number } = {
+    "A+": 4.0,
+    A: 4.0,
+    "A-": 3.7,
+    "B+": 3.3,
+    B: 3.0,
+    "B-": 2.7,
+    "C+": 2.3,
+    C: 2.0,
+    "C-": 1.7,
+    "D+": 1.3,
+    D: 1.0,
+    "D-": 0.7,
+    F: 0.0,
+  };
+
+  const addCourse = () => {
+    if (newCourseName && newCourseCredits && newCourseGrade) {
+      setCourses([...courses, { name: newCourseName, credits: Number(newCourseCredits), grade: newCourseGrade }]);
+      setNewCourseName("");
+      setNewCourseCredits("");
+      setNewCourseGrade("");
+    }
+  };
+
+  const calculateGPA = () => {
+    if (courses.length === 0) {
+      setGpa("0.00");
+      return;
+    }
+
+    let totalPoints = 0;
+    let totalCredits = 0;
+
+    courses.forEach((course) => {
+      const points = gradeToPoints[course.grade.toUpperCase()];
+      if (points !== undefined) {
+        totalPoints += points * course.credits;
+        totalCredits += course.credits;
+      }
+    });
+
+    if (totalCredits === 0) {
+      setGpa("N/A");
+    } else {
+      setGpa((totalPoints / totalCredits).toFixed(2));
+    }
+  };
+
+  useEffect(() => {
+    calculateGPA();
+  }, [courses]);
+
   const convertTime = () => {
     if (!timeToConvert) {
       setConvertedTime("Please enter a time to convert.");
@@ -175,8 +234,64 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-700 dark:text-slate-300">GPA Calculator content goes here.</p>
-              {/* Add GPA Converter specific input fields and logic here */}
+              <div className="space-y-2">
+                <Label htmlFor="courseName" className="text-gray-700 dark:text-slate-300">Course Name</Label>
+                <Input
+                  id="courseName"
+                  type="text"
+                  placeholder="e.g., Calculus I"
+                  value={newCourseName}
+                  onChange={(e) => setNewCourseName(e.target.value)}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="courseCredits" className="text-gray-700 dark:text-slate-300">Credits</Label>
+                <Input
+                  id="courseCredits"
+                  type="number"
+                  placeholder="e.g., 3"
+                  value={newCourseCredits}
+                  onChange={(e) => setNewCourseCredits(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="courseGrade" className="text-gray-700 dark:text-slate-300">Grade</Label>
+                <Select value={newCourseGrade} onValueChange={setNewCourseGrade}>
+                  <SelectTrigger className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400">
+                    <SelectValue placeholder="Select grade" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(gradeToPoints).map((grade) => (
+                      <SelectItem key={grade} value={grade}>
+                        {grade}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={addCourse} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Add Course
+              </Button>
+
+              {courses.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold text-black dark:text-white">Courses Added:</h3>
+                  <ul className="list-disc pl-5 text-gray-700 dark:text-slate-300">
+                    {courses.map((course, index) => (
+                      <li key={index}>{course.name} ({course.credits} credits) - {course.grade}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {gpa !== null && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Calculated GPA:</p>
+                  <p className="text-lg font-bold">{gpa}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
