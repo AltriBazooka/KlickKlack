@@ -24,7 +24,7 @@ export default function Home() {
     // This is a placeholder for actual currency conversion logic
     // In a real application, you would fetch exchange rates from an API
     const exchangeRates: { [key: string]: { [key: string]: number } } = {
-      USD: { WON: 1300, USD: 1 },
+      USD: { WON: 1410, USD: 1 },
       WON: { USD: 0.00077, WON: 1 },
     };
 
@@ -504,7 +504,7 @@ const [tdee, setTdee] = useState<number | null>(null);
                   type="number"
                   placeholder="e.g., 1000"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value === '' ? '' : Number(e.target.value))}
+                  onChange={(e) => setAmount(e.target.value === '' ? null : Number(e.target.value))}
                   className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
                 />
               </div>
@@ -512,6 +512,13 @@ const [tdee, setTdee] = useState<number | null>(null);
               <Button onClick={convertCurrency} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                 Convert
               </Button>
+
+              {convertedAmount !== null && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Converted Amount:</p>
+                  <p className="text-lg font-bold">{convertedAmount.toFixed(2)} {toCurrency}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
