@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
@@ -33,6 +33,49 @@ export default function Home() {
       setConvertedAmount(Number(amount) * rate);
     }
   };
+
+  const [fromTimeZone, setFromTimeZone] = useState("America/New_York");
+  const [toTimeZone, setToTimeZone] = useState("Europe/London");
+  const [timeToConvert, setTimeToConvert] = useState("");
+  const [convertedTime, setConvertedTime] = useState("");
+
+  const convertTime = () => {
+    if (!timeToConvert) {
+      setConvertedTime("Please enter a time to convert.");
+      return;
+    }
+
+    try {
+      const date = new Date(timeToConvert);
+      if (isNaN(date.getTime())) {
+        setConvertedTime("Invalid time format. Please use YYYY-MM-DD HH:MM.");
+        return;
+      }
+
+      const fromTime = new Date(date.toLocaleString("en-US", { timeZone: fromTimeZone }));
+      const toTime = new Date(date.toLocaleString("en-US", { timeZone: toTimeZone }));
+
+      const diff = toTime.getTime() - fromTime.getTime();
+      const resultDate = new Date(date.getTime() + diff);
+
+      setConvertedTime(resultDate.toLocaleString("en-US", { timeZone: toTimeZone }));
+    } catch (error) {
+      setConvertedTime("Error converting time. Please check your input and try again.");
+      console.error("Time conversion error:", error);
+    }
+  };
+
+  const timeZones = [
+    { value: "America/New_York", label: "Eastern Time (US & Canada)" },
+    { value: "America/Chicago", label: "Central Time (US & Canada)" },
+    { value: "America/Denver", label: "Mountain Time (US & Canada)" },
+    { value: "America/Los_Angeles", label: "Pacific Time (US & Canada)" },
+    { value: "Europe/London", label: "London (GMT)" },
+    { value: "Europe/Berlin", label: "Berlin (GMT+1)" },
+    { value: "Asia/Tokyo", label: "Tokyo (GMT+9)" },
+    { value: "Asia/Dubai", label: "Dubai (GMT+4)" },
+    { value: "Australia/Sydney", label: "Sydney (GMT+10)" },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
@@ -138,33 +181,59 @@ export default function Home() {
           </Card>
         )}
 
-        {selectedCalculator === 'Time Zone Converter' && (
-          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm">
+        {selectedCalculator === "Time Zone Converter" && (
+          <Card className="w-full max-w-md">
             <CardHeader>
-              <CardTitle className="text-black dark:text-white flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-green-400" />
-                Time Zone Converter
-              </CardTitle>
+              <CardTitle>Time Zone Converter</CardTitle>
+              <CardDescription>Convert time between different time zones.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-4">
-                {/* Add Time Zone Converter specific input fields and logic here */}
+              <div className="space-y-2">
+                <Label htmlFor="timeToConvert">Time to Convert</Label>
+                <Input
+                  id="timeToConvert"
+                  type="datetime-local"
+                  value={timeToConvert}
+                  onChange={(e) => setTimeToConvert(e.target.value)}
+                />
               </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {convertedAmount !== null && selectedCalculator === 'Currency Converter' && (
-          <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm mt-4">
-            <CardHeader>
-              <CardTitle className="text-black dark:text-white flex items-center gap-2">
-                <Calculator className="w-5 h-5 text-purple-400" />
-                Calculation Results
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 dark:text-slate-300">Converted Amount</p>
-              <p className="text-2xl font-bold text-green-500">{convertedAmount} {toCurrency}</p>
+              <div className="space-y-2">
+                <Label htmlFor="fromTimeZone">From Time Zone</Label>
+                <Select value={fromTimeZone} onValueChange={setFromTimeZone}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a time zone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {timeZones.map((tz) => (
+                      <SelectItem key={tz.value} value={tz.value}>
+                        {tz.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="toTimeZone">To Time Zone</Label>
+                <Select value={toTimeZone} onValueChange={setToTimeZone}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a time zone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {timeZones.map((tz) => (
+                      <SelectItem key={tz.value} value={tz.value}>
+                        {tz.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={convertTime} className="w-full">Convert Time</Button>
+              {convertedTime && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  <p className="text-sm font-medium">Converted Time:</p>
+                  <p className="text-lg font-bold">{convertedTime}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
