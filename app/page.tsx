@@ -184,8 +184,6 @@ export default function Home() {
         {selectedCalculator === "Time Zone Converter" && (
           <Card className="w-full max-w-md">
             <CardHeader>
-              <CardTitle>Time Zone Converter</CardTitle>
-              <CardDescription>Convert time between different time zones.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
