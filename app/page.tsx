@@ -39,6 +39,18 @@ export default function Home() {
   const [timeToConvert, setTimeToConvert] = useState("");
   const [convertedTime, setConvertedTime] = useState("");
 
+  const [monthlyPayment, setMonthlyPayment] = useState(null);
+  const [totalInterest, setTotalInterest] = useState(null);
+
+  const date = new Date(timeToConvert);
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZoneName: 'short',
+    timeZone: toTimeZone,
+  });
+
   const [selectedUnitCategory, setSelectedUnitCategory] = useState("Length");
   const unitCategories = {
     Length: ["meters", "feet", "kilometers", "miles"],
@@ -216,11 +228,28 @@ const [tdee, setTdee] = useState<number | null>(null);
   const [loanAmount, setLoanAmount] = useState<number | ''>('');
   const [interestRate, setInterestRate] = useState<number | ''>('');
   const [loanTerm, setLoanTerm] = useState<number | ''>(''); // in years
-  const [monthlyPayment, setMonthlyPayment] = useState<number | null>(null);
-  const [totalInterest, setTotalInterest] = useState<number | null>(null);
 
-  // Geometry Calculator states
-  const [geometryShape, setGeometryShape] = useState('');
+  // Rent Calculator states
+  const [monthlyRent, setMonthlyRent] = useState<number | ''>('');
+  const [securityDeposit, setSecurityDeposit] = useState<number | ''>('');
+  const [leaseTerm, setLeaseTerm] = useState<number | ''>(''); // in months
+  const [totalRentCost, setTotalRentCost] = useState<number | null>(null);
+  const [totalMoveInCost, setTotalMoveInCost] = useState<number | null>(null);
+
+  const calculateRent = () => {
+    const rent = parseFloat(monthlyRent as string);
+    const deposit = parseFloat(securityDeposit as string);
+    const term = parseFloat(leaseTerm as string);
+
+    if (!isNaN(rent) && !isNaN(term)) {
+      setTotalRentCost(rent * term);
+    }
+    if (!isNaN(rent) && !isNaN(deposit)) {
+      setTotalMoveInCost(rent + deposit);
+    }
+  };
+
+  const [geometryShape, setGeometryShape] = useState('Circle');
   const [side1, setSide1] = useState<number | ''>('');
   const [side2, setSide2] = useState<number | ''>('');
   const [radius, setRadius] = useState<number | ''>('');
@@ -485,6 +514,7 @@ const [tdee, setTdee] = useState<number | null>(null);
             <DropdownMenuItem onClick={() => setSelectedCalculator('Sleep Calculator')}>Sleep Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Student Loan Calculator')}>Student Loan Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Geometry Calculator')}>Geometry Calculator</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Rent Calculator')}>Rent Calculator</DropdownMenuItem>
           </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -680,7 +710,7 @@ const [tdee, setTdee] = useState<number | null>(null);
                   </SelectContent>
                 </Select>
               </div>
-              <Button onClick={convertTime} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Convert Time</Button>
+              <Button onClick={() => convertTime(timeToConvert, setConvertedTime, formatter, date)} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Convert Time</Button>
               {convertedTime && (
                 <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
                   <p className="text-sm font-medium">Converted Time:</p>
@@ -693,10 +723,13 @@ const [tdee, setTdee] = useState<number | null>(null);
 
         {selectedCalculator === 'Unit Converter' && (
             <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-                <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
-                <div className="p-6 space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="unitCategory" className="text-gray-700 dark:text-gray-300">Unit Category</Label>
+                <CardHeader>
+                    <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="p-6 space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="unitCategory" className="text-gray-700 dark:text-gray-300">Unit Category</Label>
                         <Select value={selectedUnitCategory} onValueChange={setSelectedUnitCategory}>
                             <SelectTrigger className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <SelectValue placeholder="Select a category" />
@@ -754,13 +787,17 @@ const [tdee, setTdee] = useState<number | null>(null);
                         </div>
                     )}
                 </div>
-            </Card>
-            )}
+                    </CardContent>
+                </Card>
+        )}
 
             {selectedCalculator === 'Bill Split Calculator' && (
                 <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-                    <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
-                    <div className="p-6 space-y-4">
+                    <CardHeader>
+                        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="p-6 space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="billAmount" className="text-gray-700 dark:text-gray-300">Bill Amount</Label>
                             <Input
@@ -798,6 +835,7 @@ const [tdee, setTdee] = useState<number | null>(null);
                             Each person pays: ${billPerPerson.toFixed(2)}
                         </div>
                     </div>
+                    </CardContent>
                 </Card>
             )}
 
@@ -973,6 +1011,58 @@ const [tdee, setTdee] = useState<number | null>(null);
           </Card>
         )}
 
+        {selectedCalculator === 'Rent Calculator' && (
+          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Rent Calculator</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="monthlyRent" className="text-gray-700 dark:text-gray-300">Monthly Rent ($)</Label>
+                <Input
+                  id="monthlyRent"
+                  type="number"
+                  placeholder="e.g., 1200"
+                  value={monthlyRent}
+                  onChange={(e) => setMonthlyRent(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="securityDeposit" className="text-gray-700 dark:text-gray-300">Security Deposit ($)</Label>
+                <Input
+                  id="securityDeposit"
+                  type="number"
+                  placeholder="e.g., 1200"
+                  value={securityDeposit}
+                  onChange={(e) => setSecurityDeposit(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="leaseTerm" className="text-gray-700 dark:text-gray-300">Lease Term (months)</Label>
+                <Input
+                  id="leaseTerm"
+                  type="number"
+                  placeholder="e.g., 12"
+                  value={leaseTerm}
+                  onChange={(e) => setLeaseTerm(e.target.value === '' ? '' : Number(e.target.value))}
+                  className="w-full bg-gray-50 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-slate-400"
+                />
+              </div>
+              <Button onClick={calculateRent} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Calculate Rent
+              </Button>
+              {(totalRentCost !== null || totalMoveInCost !== null) && (
+                <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+                  {totalRentCost !== null && <p className="text-sm font-medium">Total Rent Cost: <span className="font-bold">${totalRentCost.toFixed(2)}</span></p>}
+                  {totalMoveInCost !== null && <p className="text-sm font-medium">Total Move-In Cost: <span className="font-bold">${totalMoveInCost.toFixed(2)}</span></p>}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
         {selectedCalculator === 'Geometry Calculator' && (
           <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
             <CardHeader>
@@ -1119,4 +1209,18 @@ const [tdee, setTdee] = useState<number | null>(null);
       </main>
     </div>
   );
+}
+
+
+const options = {
+    value: "America/New_York",
+    label: "Eastern Time (US & Canada)"
+};
+
+function convertTime(timeToConvert, setConvertedTime, formatter, date) {
+    const options = {
+        value: "America/New_York",
+        label: "Eastern Time (US & Canada)"
+    };
+    setConvertedTime(formatter.format(date));
 }
