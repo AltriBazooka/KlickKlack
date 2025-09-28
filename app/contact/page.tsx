@@ -10,7 +10,16 @@ export default function ContactPage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            This is the contact page. You can add your contact form or information here.
+            Got feedback, ideas, or spotted a bug? We’d love to hear from you!
+          </p>
+          <p className="text-muted-foreground mt-4">
+            Email: altritaveras@gmail.com
+          </p>
+          <p className="text-muted-foreground mt-4">
+            Twitter: @AltriTaver96094
+          </p>
+          <p className="text-muted-foreground mt-4">
+            Discord: altri_bazooka
           </p>
         </CardContent>
       </Card>

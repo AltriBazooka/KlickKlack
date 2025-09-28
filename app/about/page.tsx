@@ -10,7 +10,7 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            This is the about page. You can add your content here.
+            KlickKlack is a free, all-in-one calculator hub designed to make everyday math, conversions, and problem solving fast and simple. Whether you’re tackling schoolwork, planning finances, or just figuring something out, KlickKlack keeps everything in one easy place.
           </p>
         </CardContent>
       </Card>

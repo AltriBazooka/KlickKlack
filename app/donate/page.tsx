@@ -10,7 +10,7 @@ export default function DonatePage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            This is the donate page. You can add information about how to donate here.
+            KlickKlack is free to use, but keeping it online takes time and resources. If you find the calculators helpful, consider donating to help us improve and add more features.
           </p>
         </CardContent>
       </Card>

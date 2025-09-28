@@ -10,7 +10,13 @@ export default function PrivacyPolicyPage() {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">
-            This is the privacy policy page. You can add your privacy policy content here.
+            KlickKlack doesn’t collect personal data for calculators to work. If we use cookies, it’s only to improve your browsing experience (like saving settings or themes).
+          </p>
+          <p className="text-muted-foreground mt-4">
+            We will never sell or share your personal information with third parties.
+          </p>
+          <p className="text-muted-foreground mt-4">
+            If you have questions about privacy, reach out via our Contact page.
           </p>
         </CardContent>
       </Card>
