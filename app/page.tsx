@@ -494,8 +494,8 @@ const [tdee, setTdee] = useState<number | null>(null);
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full max-w-md">
-        <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm mb-4">
+      <main className="w-full max-w-2xl">
+        <Card className="bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700 shadow-sm mb-4 p-8">
           <CardContent className="flex flex-col items-center justify-center p-6">
             <h1 className="text-4xl font-bold text-black dark:text-white mb-2">KlickKlack</h1>
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">Smart Calculations, Made Easy.</p>
@@ -722,7 +722,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
         {selectedCalculator === 'Unit Converter' && (
-            <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+            <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
                 <CardHeader>
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Unit Converter</CardTitle>
                 </CardHeader>
@@ -792,7 +792,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
             {selectedCalculator === 'Bill Split Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+                <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
                     <CardHeader>
                         <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Bill Split Calculator</CardTitle>
                     </CardHeader>
@@ -840,7 +840,7 @@ const [tdee, setTdee] = useState<number | null>(null);
             )}
 
             {selectedCalculator === 'Age Calculator' && (
-                <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+                <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
                     <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Age Calculator</CardTitle>
                     <div className="p-6 space-y-4">
                         <div className="space-y-2">
@@ -861,7 +861,7 @@ const [tdee, setTdee] = useState<number | null>(null);
             )}
 
             {selectedCalculator === 'Health Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+          <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
             <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Health Calculator</CardTitle>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
@@ -925,7 +925,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
         {selectedCalculator === 'Sleep Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+          <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
             <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Sleep Calculator</CardTitle>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
@@ -962,7 +962,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
         {selectedCalculator === 'Student Loan Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+          <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
             <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Student Loan Calculator</CardTitle>
             <CardContent className="p-6 space-y-4">
               <div className="space-y-2">
@@ -1012,7 +1012,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
         {selectedCalculator === 'Rent Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+          <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Rent Calculator</CardTitle>
             </CardHeader>
@@ -1064,7 +1064,7 @@ const [tdee, setTdee] = useState<number | null>(null);
         )}
 
         {selectedCalculator === 'Geometry Calculator' && (
-          <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
+          <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Geometry Calculator</CardTitle>
             </CardHeader>
