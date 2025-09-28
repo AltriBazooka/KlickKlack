@@ -9,7 +9,7 @@ import { SiteHeader } from "@/components/ui/header"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Crypto Position Size Calculator",
+  title: "KlickKlack",
   description: "Calculate your crypto futures position size for optimal risk management",
     generator: 'v0.app'
 }
