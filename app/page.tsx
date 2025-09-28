@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Calculator, TrendingUp, Shield, Target, Sun, Share2, Download, Moon } from "lucide-react"
+import StandardCalculator from '@/components/ui/standard-calculator';
 import { useTheme } from "next-themes"
 import jsPDF from "jspdf"
 import Head from "next/head"
@@ -15,6 +16,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 
 export default function Home() {
   const [selectedCalculator, setSelectedCalculator] = useState('Currency Converter');
+  const [standardCalculatorInput, setStandardCalculatorInput] = useState('');
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('WON');
   const [amount, setAmount] = useState<number | ''>('');
@@ -505,6 +507,7 @@ const [tdee, setTdee] = useState<number | null>(null);
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Currency Converter')}>Currency Converter</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Standard Calculator')}>Standard Calculator</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('GPA Calculator')}>GPA Calculator</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Time Zone Converter')}>Time Zone Converter</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedCalculator('Unit Converter')}>Unit Converter</DropdownMenuItem>
@@ -588,6 +591,10 @@ const [tdee, setTdee] = useState<number | null>(null);
               )}
             </CardContent>
           </Card>
+        )}
+
+        {selectedCalculator === 'Standard Calculator' && (
+          <StandardCalculator />
         )}
 
         {selectedCalculator === 'GPA Calculator' && (

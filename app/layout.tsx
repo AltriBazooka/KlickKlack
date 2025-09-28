@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "KlickKlack",
-  description: "Calculate your crypto futures position size for optimal risk management",
+  description: "Smart Calculations, Made Easy",
     generator: 'v0.app'
 }
 
