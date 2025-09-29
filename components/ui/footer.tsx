@@ -29,6 +29,9 @@ export function SiteFooter() {
           <Link href="/privacy-policy" className="text-base font-medium hover:underline px-2">
             Privacy Policy
           </Link>
+          <Link href="/terms-of-service" className="text-base font-medium hover:underline px-2">
+            Terms of Service
+          </Link>
         </div>
       </div>
     </footer>
