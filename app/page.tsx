@@ -26,8 +26,13 @@ export default function Home() {
     // This is a placeholder for actual currency conversion logic
     // In a real application, you would fetch exchange rates from an API
     const exchangeRates: { [key: string]: { [key: string]: number } } = {
-      USD: { WON: 1410, USD: 1 },
-      WON: { USD: 0.00077, WON: 1 },
+      USD: { WON: 1350, JPY: 150, EUR: 0.85, GBP: 0.74, AUD: 1.53, CAD: 1.38 },
+      WON: { USD: 0.00074, JPY: 0.11, EUR: 0.00063, GBP: 0.00055, AUD: 1.53 / 1350, CAD: 1.38 / 1350 },
+      JPY: { USD: 0.0067, WON: 9, EUR: 0.0057, GBP: 0.0049, AUD: 1.53 / 150, CAD: 1.38 / 150 },
+      EUR: { USD: 1.18, WON: 1587, JPY: 175, GBP: 0.88, AUD: 1.53 / 0.85, CAD: 1.38 / 0.85 },
+      GBP: { USD: 1.35, WON: 1822, JPY: 202.5, EUR: 1.15, AUD: 1.53 / 0.74, CAD: 1.38 / 0.74 },
+      AUD: { USD: 1 / 1.53, WON: 1350 / 1.53, JPY: 150 / 1.53, EUR: 0.85 / 1.53, GBP: 0.74 / 1.53, CAD: 1.38 / 1.53 },
+      CAD: { USD: 1 / 1.38, WON: 1350 / 1.38, JPY: 150 / 1.38, EUR: 0.85 / 1.38, GBP: 0.74 / 1.38, AUD: 1.53 / 1.38 },
     };
 
     if (fromCurrency && toCurrency && amount) {
@@ -544,6 +549,11 @@ const [tdee, setTdee] = useState<number | null>(null);
                   <SelectContent>
                     <SelectItem value="USD">USD</SelectItem>
                     <SelectItem value="WON">WON</SelectItem>
+                    <SelectItem value="JPY">JPY</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="AUD">AUD</SelectItem>
+                    <SelectItem value="CAD">CAD</SelectItem>
                     {/* Add more currencies as needed */}
                   </SelectContent>
                 </Select>
@@ -560,7 +570,11 @@ const [tdee, setTdee] = useState<number | null>(null);
                   <SelectContent>
                     <SelectItem value="USD">USD</SelectItem>
                     <SelectItem value="WON">WON</SelectItem>
-                    {/* Add more currencies as needed */}
+                    <SelectItem value="JPY">JPY</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="AUD">AUD</SelectItem>
+                    <SelectItem value="CAD">CAD</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
