@@ -13,6 +13,7 @@ import { useTheme } from "next-themes"
 import jsPDF from "jspdf"
 import Head from "next/head"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import PricingCalculatorPage from './pricing-calculator/page';
 
 export default function Home() {
   const [selectedCalculator, setSelectedCalculator] = useState('Currency Converter');
@@ -523,6 +524,7 @@ const [tdee, setTdee] = useState<number | null>(null);
             <DropdownMenuItem onClick={() => setSelectedCalculator('Student Loan Calculator')}>Student Loan Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Geometry Calculator')}>Geometry Calculator</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setSelectedCalculator('Rent Calculator')}>Rent Calculator</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSelectedCalculator('Pricing Calculator')}>Pricing Calculator</DropdownMenuItem>
           </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
@@ -1082,6 +1084,10 @@ const [tdee, setTdee] = useState<number | null>(null);
               )}
             </CardContent>
           </Card>
+        )}
+
+        {selectedCalculator === 'Pricing Calculator' && (
+          <PricingCalculatorPage />
         )}
 
         {selectedCalculator === 'Geometry Calculator' && (
