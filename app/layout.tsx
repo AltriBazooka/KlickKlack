@@ -48,12 +48,7 @@ export default function RootLayout({
             </div>
           </div>
           <SiteFooter />
-          <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 p-4 w-full"> {/* Bottom center square */}
-            <div className="w-full text-center">
-              {/* Bottom center ad banner */}
-              <AdBanner dataAdSlot="YOUR_AD_SLOT_ID_4" className="mx-auto h-[90px] w-[728px]" />
-            </div>
-          </div>
+
         </ThemeProvider>
       </body>
     </html>
