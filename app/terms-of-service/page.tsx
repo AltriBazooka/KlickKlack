@@ -32,25 +32,19 @@ const TermsOfServicePage = () => {
             <br /><br />
             Donating does not create any contract, partnership, or entitlement to special services.
             <br /><br />
-            4. Advertisements
-            <br /><br />
-            This site displays ads through Google AdSense and possibly other ad partners.
-            <br /><br />
-            We are not responsible for the content, products, or services shown in third-party ads.
-            <br /><br />
-            5. Limitation of Liability
+            4. Limitation of Liability
             <br /><br />
             We are not liable for any direct, indirect, or incidental damages resulting from use of the site.
             <br /><br />
             By using the site, you accept full responsibility for how you use the information provided.
             <br /><br />
-            6. Changes to the Terms
+            5. Changes to the Terms
             <br /><br />
             We may update these Terms at any time.
             <br /><br />
             Continued use of the site after changes means you accept the updated Terms.
             <br /><br />
-            7. Contact
+            6. Contact
             <br /><br />
             If you have questions, reach me at: altritaveras@gmail.com
           </p>
