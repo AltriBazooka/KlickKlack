@@ -231,6 +231,7 @@ const [tdee, setTdee] = useState<number | null>(null);
   const [wakeUpTime, setWakeUpTime] = useState('');
   const [sleepDuration, setSleepDuration] = useState<number | ''>('');
   const [bedTime, setBedTime] = useState('');
+  const [triggerSleepCalculation, setTriggerSleepCalculation] = useState(false);
 
   // Student Loan Calculator states
   const [loanAmount, setLoanAmount] = useState<number | ''>('');
@@ -330,7 +331,7 @@ const [tdee, setTdee] = useState<number | null>(null);
     };
 
     useEffect(() => {
-        if (wakeUpTime && sleepDuration) {
+        if (wakeUpTime && sleepDuration && triggerSleepCalculation) {
             const [wakeUpHour, wakeUpMinute] = wakeUpTime.split(':').map(Number);
             const wakeUpDate = new Date();
             wakeUpDate.setHours(wakeUpHour, wakeUpMinute, 0, 0);
@@ -346,8 +347,9 @@ const [tdee, setTdee] = useState<number | null>(null);
             const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
 
             setBedTime(`${hours}:${formattedMinutes} ${ampm}`);
+            setTriggerSleepCalculation(false);
         }
-    }, [wakeUpTime, sleepDuration]);
+    }, [wakeUpTime, sleepDuration, triggerSleepCalculation]);
 
   const calculateHealthMetrics = () => {
     if (weight && height && age && sex && activityLevel) {
@@ -395,19 +397,7 @@ const [tdee, setTdee] = useState<number | null>(null);
   };
 
   const calculateBedTime = () => {
-    if (wakeUpTime && sleepDuration) {
-      const [wakeUpHour, wakeUpMinute] = wakeUpTime.split(':').map(Number);
-      const wakeUpDate = new Date();
-      wakeUpDate.setHours(wakeUpHour, wakeUpMinute, 0, 0);
-
-      const sleepDurationMs = Number(sleepDuration) * 60 * 60 * 1000;
-      const bedTimeDate = new Date(wakeUpDate.getTime() - sleepDurationMs);
-
-      const bedTimeHour = bedTimeDate.getHours().toString().padStart(2, '0');
-      const bedTimeMinute = bedTimeDate.getMinutes().toString().padStart(2, '0');
-
-      setBedTime(`${bedTimeHour}:${bedTimeMinute}`);
-    }
+    setTriggerSleepCalculation(true);
   };
 
   const calculateLoanPayments = () => {
