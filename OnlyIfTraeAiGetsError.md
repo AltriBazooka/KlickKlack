@@ -5,4 +5,4 @@ This document describes how to synchronize your local Git repository with the re
 `git fetch origin`
 `git reset --hard origin/main`
 
-These commands will synchronize your local repository (on your desktop) with the latest version from the `main` branch on GitHub, effectively resetting your local repo to match the remote.
+These commands will synchronize your local repository (on your desktop) with the latest version from the `main` branch on GitHub, effectively resetting your local repo to match the remote. 
