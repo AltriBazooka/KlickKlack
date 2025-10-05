@@ -18,15 +18,15 @@ export default function BillSplitCalculator() {
   }, [billAmount, numPeople, tipPercentage]);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle>Bill Split Calculator</CardTitle>
-        <CardDescription>Split bills and calculate tips easily.</CardDescription>
+        <CardTitle className="text-gray-700 dark:text-gray-300">Bill Split Calculator</CardTitle>
+        <CardDescription className="text-gray-700 dark:text-gray-300">Split bills and calculate tips easily.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div>
-            <Label htmlFor="billAmount">Bill Amount</Label>
+            <Label htmlFor="billAmount" className="text-gray-700 dark:text-gray-300">Bill Amount</Label>
             <Input
               id="billAmount"
               type="number"
@@ -34,10 +34,11 @@ export default function BillSplitCalculator() {
               onChange={(e) => setBillAmount(parseFloat(e.target.value))}
               placeholder="Enter bill amount"
               min="0"
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50"
             />
           </div>
           <div>
-            <Label htmlFor="numPeople">Number of People</Label>
+            <Label htmlFor="numPeople" className="text-gray-700 dark:text-gray-300">Number of People</Label>
             <Input
               id="numPeople"
               type="number"
@@ -45,10 +46,11 @@ export default function BillSplitCalculator() {
               onChange={(e) => setNumPeople(parseInt(e.target.value))}
               placeholder="Enter number of people"
               min="1"
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50"
             />
           </div>
           <div>
-            <Label htmlFor="tipPercentage">Tip Percentage</Label>
+            <Label htmlFor="tipPercentage" className="text-gray-700 dark:text-gray-300">Tip Percentage</Label>
             <Input
               id="tipPercentage"
               type="number"
@@ -57,9 +59,10 @@ export default function BillSplitCalculator() {
               placeholder="Enter tip percentage"
               min="0"
               max="100"
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50"
             />
           </div>
-          <div className="mt-4 text-right">
+          <div className="mt-4 text-right text-gray-700 dark:text-gray-300">
             <h2 className="text-2xl font-bold">
               Bill per person: ${billPerPerson.toFixed(2)}
             </h2>

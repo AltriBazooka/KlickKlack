@@ -60,29 +60,30 @@ export default function TimeZoneConverter() {
   }, [timeToConvert, fromTimeZone, toTimeZone]);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle>Time Zone Converter</CardTitle>
-        <CardDescription>Convert time between different time zones.</CardDescription>
+        <CardTitle className="text-gray-700 dark:text-gray-300">Time Zone Converter</CardTitle>
+        <CardDescription className="text-gray-700 dark:text-gray-300">Convert time between different time zones.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div>
-            <Label htmlFor="timeToConvert">Time</Label>
+            <Label htmlFor="timeToConvert" className="text-gray-700 dark:text-gray-300">Time</Label>
             <Input
               id="timeToConvert"
               type="time"
               value={timeToConvert}
               onChange={(e) => setTimeToConvert(e.target.value)}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50"
             />
           </div>
           <div>
-            <Label htmlFor="fromTimeZone">From Time Zone</Label>
+            <Label htmlFor="fromTimeZone" className="text-gray-700 dark:text-gray-300">From Time Zone</Label>
             <Select value={fromTimeZone} onValueChange={setFromTimeZone}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50">
                 <SelectValue placeholder="Select source time zone" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50">
                 {timeZones.map((zone) => (
                   <SelectItem key={zone} value={zone}>
                     {zone}
@@ -92,12 +93,12 @@ export default function TimeZoneConverter() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="toTimeZone">To Time Zone</Label>
+            <Label htmlFor="toTimeZone" className="text-gray-700 dark:text-gray-300">To Time Zone</Label>
             <Select value={toTimeZone} onValueChange={setToTimeZone}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50">
                 <SelectValue placeholder="Select target time zone" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50">
                 {timeZones.map((zone) => (
                   <SelectItem key={zone} value={zone}>
                     {zone}
@@ -106,9 +107,9 @@ export default function TimeZoneConverter() {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={convertTime}>Convert Time</Button>
+          <Button onClick={convertTime} className="bg-blue-500 hover:bg-blue-600 text-white">Convert Time</Button>
           {convertedTime && (
-            <div className="text-center text-xl font-semibold">
+            <div className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300">
               Converted Time: {convertedTime}
             </div>
           )}

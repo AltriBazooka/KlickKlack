@@ -62,42 +62,44 @@ export default function GPACalculator() {
   }, [courses]);
 
   return (
-    <Card className="w-full max-w-2xl">
+    <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
       <CardHeader>
-        <CardTitle>GPA Calculator</CardTitle>
-        <CardDescription>Calculate your Grade Point Average.</CardDescription>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">GPA Calculator</CardTitle>
+        <CardDescription className="text-center">Calculate your Grade Point Average.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-2">
-              <Label htmlFor="courseName">Course Name</Label>
+              <Label htmlFor="courseName" className="text-gray-700 dark:text-gray-300">Course Name</Label>
               <Input
                 id="courseName"
                 value={newCourseName}
                 onChange={(e) => setNewCourseName(e.target.value)}
                 placeholder="e.g., Calculus I"
+                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
               />
             </div>
             <div>
-              <Label htmlFor="credits">Credits</Label>
+              <Label htmlFor="credits" className="text-gray-700 dark:text-gray-300">Credits</Label>
               <Input
                 id="credits"
                 type="number"
                 value={newCourseCredits}
                 onChange={(e) => setNewCourseCredits(parseInt(e.target.value))}
                 min="1"
+                className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
               />
             </div>
             <div>
-              <Label htmlFor="grade">Grade</Label>
+              <Label htmlFor="grade" className="text-gray-700 dark:text-gray-300">Grade</Label>
               <Select value={newCourseGrade} onValueChange={setNewCourseGrade}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
                   <SelectValue placeholder="Select grade" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                   {Object.keys(gradeToPoints).map((grade) => (
-                    <SelectItem key={grade} value={grade}>
+                    <SelectItem key={grade} value={grade} className="text-black dark:text-white">
                       {grade}
                     </SelectItem>
                   ))}
@@ -105,18 +107,20 @@ export default function GPACalculator() {
               </Select>
             </div>
           </div>
-          <Button onClick={addCourse}>Add Course</Button>
+          <Button onClick={addCourse} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Add Course
+          </Button>
 
           <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2">Added Courses</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Added Courses</h3>
             {courses.length === 0 ? (
-              <p className="text-gray-500">No courses added yet.</p>
+              <p className="text-gray-500 dark:text-gray-400">No courses added yet.</p>
             ) : (
               <div className="grid gap-2">
                 {courses.map((course) => (
-                  <div key={course.id} className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-2 rounded">
-                    <span>{course.name} ({course.credits} credits)</span>
-                    <Badge variant="secondary">{course.grade}</Badge>
+                  <div key={course.id} className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                    <span className="text-black dark:text-white">{course.name} ({course.credits} credits)</span>
+                    <Badge variant="secondary" className="text-black dark:text-white">{course.grade}</Badge>
                   </div>
                 ))}
               </div>
@@ -124,7 +128,7 @@ export default function GPACalculator() {
           </div>
 
           <div className="mt-4 text-right">
-            <h2 className="text-2xl font-bold">Calculated GPA: {gpa}</h2>
+            <h2 className="text-2xl font-bold text-black dark:text-white">Calculated GPA: {gpa}</h2>
           </div>
         </div>
       </CardContent>

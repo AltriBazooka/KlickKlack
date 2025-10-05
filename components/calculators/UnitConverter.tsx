@@ -82,20 +82,20 @@ export default function UnitConverter() {
   }, [unitAmount, fromUnit, toUnit, selectedUnitCategory]);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700">
       <CardHeader>
-        <CardTitle>Unit Converter</CardTitle>
-        <CardDescription>Convert between various units of measurement.</CardDescription>
+        <CardTitle className="text-gray-700 dark:text-gray-300">Unit Converter</CardTitle>
+        <CardDescription className="text-gray-700 dark:text-gray-300">Convert between various units of measurement.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div>
-            <Label htmlFor="unitCategory">Category</Label>
+            <Label htmlFor="unitCategory" className="text-gray-700 dark:text-gray-300">Category</Label>
             <Select value={selectedUnitCategory} onValueChange={setSelectedUnitCategory}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50">
                 {Object.keys(unitCategories).map((category) => (
                   <SelectItem key={category} value={category}>
                     {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -105,23 +105,24 @@ export default function UnitConverter() {
             </Select>
           </div>
           <div>
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount" className="text-gray-700 dark:text-gray-300">Amount</Label>
             <Input
               id="amount"
               type="number"
               value={unitAmount}
               onChange={(e) => setUnitAmount(parseFloat(e.target.value))}
               placeholder="Enter amount"
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="fromUnit">From Unit</Label>
+              <Label htmlFor="fromUnit" className="text-gray-700 dark:text-gray-300">From Unit</Label>
               <Select value={fromUnit} onValueChange={setFromUnit}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50">
                   <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50">
                   {unitCategories[selectedUnitCategory]?.units.map((unit) => (
                     <SelectItem key={unit} value={unit}>
                       {unit}
@@ -131,12 +132,12 @@ export default function UnitConverter() {
               </Select>
             </div>
             <div>
-              <Label htmlFor="toUnit">To Unit</Label>
+              <Label htmlFor="toUnit" className="text-gray-700 dark:text-gray-300">To Unit</Label>
               <Select value={toUnit} onValueChange={setToUnit}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-50">
                   <SelectValue placeholder="Select unit" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-50">
                   {unitCategories[selectedUnitCategory]?.units.map((unit) => (
                     <SelectItem key={unit} value={unit}>
                       {unit}
@@ -146,9 +147,9 @@ export default function UnitConverter() {
               </Select>
             </div>
           </div>
-          <Button onClick={convertUnits}>Convert Unit</Button>
+          <Button onClick={convertUnits} className="bg-blue-500 hover:bg-blue-600 text-white">Convert Unit</Button>
           {convertedUnit !== null && (
-            <div className="text-center text-xl font-semibold">
+            <div className="text-center text-xl font-semibold text-gray-700 dark:text-gray-300">
               Converted Amount: {convertedUnit.toFixed(4)}
             </div>
           )}

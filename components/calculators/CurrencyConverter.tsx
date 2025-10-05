@@ -40,36 +40,37 @@ export default function CurrencyConverter() {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
       <CardHeader>
-        <CardTitle>Currency Converter</CardTitle>
-        <CardDescription>Convert between different currencies.</CardDescription>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Currency Converter</CardTitle>
+        <CardDescription className="text-center">Convert between different currencies.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="amount">Amount</Label>
+            <Label htmlFor="amount" className="text-gray-700 dark:text-gray-300">Amount</Label>
             <Input
               id="amount"
               type="number"
               placeholder="Enter amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="fromCurrency">From</Label>
+              <Label htmlFor="fromCurrency" className="text-gray-700 dark:text-gray-300">From</Label>
               <Select
                 value={fromCurrency}
                 onValueChange={(value) => setFromCurrency(value)}
               >
-                <SelectTrigger id="fromCurrency">
+                <SelectTrigger id="fromCurrency" className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                   {Object.keys(conversionRates).map((currency) => (
-                    <SelectItem key={currency} value={currency}>
+                    <SelectItem key={currency} value={currency} className="text-black dark:text-white">
                       {currency}
                     </SelectItem>
                   ))}
@@ -77,17 +78,17 @@ export default function CurrencyConverter() {
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="toCurrency">To</Label>
+              <Label htmlFor="toCurrency" className="text-gray-700 dark:text-gray-300">To</Label>
               <Select
                 value={toCurrency}
                 onValueChange={(value) => setToCurrency(value)}
               >
-                <SelectTrigger id="toCurrency">
+                <SelectTrigger id="toCurrency" className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-black dark:text-white">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700">
                   {Object.keys(conversionRates).map((currency) => (
-                    <SelectItem key={currency} value={currency}>
+                    <SelectItem key={currency} value={currency} className="text-black dark:text-white">
                       {currency}
                     </SelectItem>
                   ))}
@@ -95,10 +96,12 @@ export default function CurrencyConverter() {
               </Select>
             </div>
           </div>
-          <Button onClick={convertCurrency}>Convert</Button>
+          <Button onClick={convertCurrency} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            Convert
+          </Button>
           {convertedAmount !== null && (
-            <div className="mt-4 text-center">
-              <h3 className="text-xl font-bold">
+            <div className="mt-4 p-3 bg-gray-100 dark:bg-gray-800 rounded-md">
+              <h3 className="text-sm font-medium">
                 {amount} {fromCurrency} is {convertedAmount.toFixed(2)}{" "}
                 {toCurrency}
               </h3>
