@@ -5,7 +5,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu'
 import { Calculator, TrendingUp, Shield, Target, Sun, Share2, Download, Moon } from "lucide-react"
 
 import { useTheme } from "next-themes"
@@ -41,20 +51,70 @@ export default function Home() {
               <DropdownMenuTrigger asChild>
                 <Button variant="default" className="text-xl font-bold text-black mb-2">Choose a Calculator</Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <Link href="/calculators/currency-converter" passHref><DropdownMenuItem asChild><p>Currency Converter</p></DropdownMenuItem></Link>
-                <Link href="/calculators/standard-calculator" passHref><DropdownMenuItem asChild><p>Standard Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/gpa-calculator" passHref><DropdownMenuItem asChild><p>GPA Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/time-zone-converter" passHref><DropdownMenuItem asChild><p>Time Zone Converter</p></DropdownMenuItem></Link>
-                <Link href="/calculators/unit-converter" passHref><DropdownMenuItem asChild><p>Unit Converter</p></DropdownMenuItem></Link>
-                <Link href="/calculators/bill-split-calculator" passHref><DropdownMenuItem asChild><p>Bill Split Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/age-calculator" passHref><DropdownMenuItem asChild><p>Age Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/health-calculator" passHref><DropdownMenuItem asChild><p>Health Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/sleep-calculator" passHref><DropdownMenuItem asChild><p>Sleep Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/student-loan-calculator" passHref><DropdownMenuItem asChild><p>Student Loan Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/geometry-calculator" passHref><DropdownMenuItem asChild><p>Geometry Calculator</p></DropdownMenuItem></Link>
-                <Link href="/calculators/rent-calculator" passHref><DropdownMenuItem asChild><p>Rent Calculator</p></DropdownMenuItem></Link>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Math & Academic</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/standard-calculator">Standard Calculator</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/gpa-calculator">GPA Calculator</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/geometry-calculator">Geometry Calculator</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
 
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Finance & Money</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                    <Link href="/calculators/student-loan-calculator">
+                      Student Loan Calculator
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/rent-calculator">Rent Calculator</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/bill-split-calculator">
+                      Bill Split Calculator
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/currency-converter">Currency Converter</Link>
+                  </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Health & Lifestyle</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                    <Link href="/calculators/health-calculator">Health Calculator</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/sleep-calculator">Sleep Calculator</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/age-calculator">Age Calculator</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/time-zone-converter">Time Zone Converter</Link>
+                  </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Conversions</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                    <Link href="/calculators/unit-converter">Unit Converter</Link>
+                  </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>
