@@ -17,6 +17,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "student-loan-calculator": dynamic(() => import("@/components/calculators/StudentLoanCalculator"), { ssr: false }),
   "time-zone-converter": dynamic(() => import("@/components/calculators/TimeZoneConverter"), { ssr: false }),
   "unit-converter": dynamic(() => import("@/components/calculators/UnitConverter"), { ssr: false }),
+  "typing-speed-calculator": dynamic(() => import("@/components/calculators/TypingSpeedCalculator"), { ssr: false }),
 
 };
 

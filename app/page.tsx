@@ -68,6 +68,15 @@ export default function Home() {
                 </DropdownMenuSub>
 
                 <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Productivity & Skills</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/typing-speed-calculator">Typing Speed Calculator</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSub>
                   <DropdownMenuSubTrigger>Finance & Money</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
                     <DropdownMenuItem asChild>
