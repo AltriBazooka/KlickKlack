@@ -18,6 +18,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "time-zone-converter": dynamic(() => import("@/components/calculators/TimeZoneConverter"), { ssr: false }),
   "unit-converter": dynamic(() => import("@/components/calculators/UnitConverter"), { ssr: false }),
   "typing-speed-calculator": dynamic(() => import("@/components/calculators/TypingSpeedCalculator"), { ssr: false }),
+  "percentage-calculator": dynamic(() => import("@/components/calculators/PercentageCalculator"), { ssr: false }),
 
 };
 
