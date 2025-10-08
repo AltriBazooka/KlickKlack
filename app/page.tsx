@@ -139,6 +139,16 @@ export default function Home() {
                   </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>Games & Fun</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/dice-roller">Dice Roller</Link>
+                    </DropdownMenuItem>
+                    {/* Add Games & Fun calculators here */}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
               </DropdownMenuContent>
             </DropdownMenu>
           </CardContent>

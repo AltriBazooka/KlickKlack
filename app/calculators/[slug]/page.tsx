@@ -22,6 +22,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "scientific-calculator": dynamic(() => import("@/components/calculators/ScientificCalculator"), { ssr: false }),
   "statistics-calculator": dynamic(() => import("@/components/calculators/StatisticsCalculator"), { ssr: false }),
   "pomodoro-calculator": dynamic(() => import("@/components/calculators/PomodoroCalculator"), { ssr: false }),
+  "dice-roller": dynamic(() => import("@/components/calculators/DiceRoller"), { ssr: false }),
 
 };
 
