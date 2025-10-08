@@ -71,6 +71,9 @@ export default function Home() {
                       <Link href="/calculators/scientific-calculator">Scientific Calculator</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
+                      <Link href="/graphing-calculator">Graphing Calculator</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/calculators/statistics-calculator">Statistics Calculator</Link>
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
