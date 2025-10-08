@@ -49,7 +49,7 @@ export default function Home() {
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">Smart Calculations, Made Easy.</p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="default" className="text-xl font-bold text-black mb-2">Choose a Calculator</Button>
+                <Button variant="default" className="text-xl font-bold text-black mb-2">Explore Tools</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuSub>
