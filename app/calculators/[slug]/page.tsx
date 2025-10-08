@@ -21,6 +21,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "percentage-calculator": dynamic(() => import("@/components/calculators/PercentageCalculator"), { ssr: false }),
   "scientific-calculator": dynamic(() => import("@/components/calculators/ScientificCalculator"), { ssr: false }),
   "statistics-calculator": dynamic(() => import("@/components/calculators/StatisticsCalculator"), { ssr: false }),
+  "pomodoro-calculator": dynamic(() => import("@/components/calculators/PomodoroCalculator"), { ssr: false }),
 
 };
 
