@@ -67,6 +67,9 @@ export default function Home() {
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/percentage-calculator">Percentage Calculator</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/scientific-calculator">Scientific Calculator</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
