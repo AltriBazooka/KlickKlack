@@ -45,28 +45,30 @@ const NumberGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Number Generator 🔢</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Number Generator 🔢</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="min">Min</Label>
+            <Label htmlFor="min" className="text-gray-700 dark:text-gray-300">Min</Label>
             <Input
               id="min"
               type="number"
               value={min}
               onChange={(e) => setMin(Number(e.target.value))}
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="max">Max</Label>
+            <Label htmlFor="max" className="text-gray-700 dark:text-gray-300">Max</Label>
             <Input
               id="max"
               type="number"
               value={max}
               onChange={(e) => setMax(Number(e.target.value))}
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
           <div className="flex items-center space-x-2">
@@ -75,21 +77,22 @@ const NumberGenerator = () => {
               checked={allowRepeats}
               onCheckedChange={(checked) => setAllowRepeats(checked as boolean)}
             />
-            <Label htmlFor="allowRepeats">Allow Repeats</Label>
+            <Label htmlFor="allowRepeats" className="text-gray-700 dark:text-gray-300">Allow Repeats</Label>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="generateMultiple">Generate Multiple</Label>
+            <Label htmlFor="generateMultiple" className="text-gray-700 dark:text-gray-300">Generate Multiple</Label>
             <Input
               id="generateMultiple"
               type="number"
               min="1"
               value={generateMultiple}
               onChange={(e) => setGenerateMultiple(Number(e.target.value))}
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
-          <Button onClick={generateNumbers}>Generate</Button>
+          <Button onClick={generateNumbers} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate</Button>
           {results.length > 0 && (
-            <div className="mt-4 p-4 bg-muted rounded-md">
+            <div className="mt-4 p-4 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               <h3 className="text-lg font-semibold">Results:</h3>
               <p>{results.join(', ')}</p>
             </div>
@@ -115,24 +118,25 @@ const NameGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Name Generator 👤</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Name Generator 👤</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="nameList">Names (comma-separated)</Label>
+            <Label htmlFor="nameList" className="text-gray-700 dark:text-gray-300">Names (comma-separated)</Label>
             <Textarea
               id="nameList"
               value={nameList}
               onChange={(e) => setNameList(e.target.value)}
               placeholder="Enter names separated by commas"
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
-          <Button onClick={generateName}>Generate Name</Button>
+          <Button onClick={generateName} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Name</Button>
           {result && (
-            <div className="mt-4 p-4 bg-muted rounded-md">
+            <div className="mt-4 p-4 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               <h3 className="text-lg font-semibold">Result:</h3>
               <p>{result}</p>
             </div>
@@ -149,7 +153,7 @@ const CoinDiceGenerator = () => {
   const [numDice, setNumDice] = useState(1);
   const [result, setResult] = useState<string | null>(null);
 
-  const generate = () => {
+  const handleCoinDiceGenerate = () => {
     if (mode === 'coin') {
       setResult(Math.random() < 0.5 ? 'Heads' : 'Tails');
     } else {
@@ -165,14 +169,14 @@ const CoinDiceGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Coin Flip / Dice Roll 🪙🎲</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Coin Flip / Dice Roll 🪙🎲</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="coinDiceMode">Mode</Label>
+            <Label htmlFor="coinDiceMode" className="text-gray-700 dark:text-gray-300">Mode</Label>
             <Select value={mode} onValueChange={setMode}>
               <SelectTrigger id="coinDiceMode">
                 <SelectValue placeholder="Select mode" />
@@ -186,32 +190,34 @@ const CoinDiceGenerator = () => {
 
           {mode === 'dice' && (
             <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="numDice">Number of Dice</Label>
+              <div className="grid gap-2 mt-4 p-4 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
+                <Label htmlFor="numDice" className="text-gray-700 dark:text-gray-300">Number of Dice</Label>
                 <Input
                   id="numDice"
                   type="number"
                   min="1"
                   value={numDice}
                   onChange={(e) => setNumDice(Number(e.target.value))}
+                  className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="diceSides">Sides per Die</Label>
+                <Label htmlFor="diceSides" className="text-gray-700 dark:text-gray-300">Sides per Die</Label>
                 <Input
                   id="diceSides"
                   type="number"
                   min="2"
                   value={diceSides}
                   onChange={(e) => setDiceSides(Number(e.target.value))}
+                  className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
                 />
               </div>
             </div>
           )}
 
-          <Button onClick={generate}>Generate</Button>
+          <Button onClick={handleCoinDiceGenerate} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate</Button>
           {result && (
-            <div className="mt-4 p-4 bg-muted rounded-md">
+            <div className="mt-4 p-4 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               <h3 className="text-lg font-semibold">Result:</h3>
               <p>{result}</p>
             </div>
@@ -244,27 +250,27 @@ const ColorGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Color Generator 🎨</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Color Generator 🎨</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <Button onClick={generateRandomColor}>Generate Random Color</Button>
+          <Button onClick={generateRandomColor} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Random Color</Button>
           <div className="flex items-center justify-center h-20 rounded-md" style={{ backgroundColor: color }}></div>
           <div className="grid gap-2">
-            <Label>HEX</Label>
+            <Label className="text-gray-700 dark:text-gray-300">HEX</Label>
             <div className="flex items-center space-x-2">
-              <Input type="text" value={color} readOnly />
+              <Input type="text" value={color} readOnly className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600" />
               <Button variant="outline" size="icon" onClick={() => copyToClipboard(color)}>
                 <CopyIcon className="h-4 w-4" />
               </Button>
             </div>
           </div>
           <div className="grid gap-2">
-            <Label>RGB</Label>
+            <Label className="text-gray-700 dark:text-gray-300">RGB</Label>
             <div className="flex items-center space-x-2">
-              <Input type="text" value={hexToRgb(color)} readOnly />
+              <Input type="text" value={hexToRgb(color)} readOnly className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600" />
               <Button variant="outline" size="icon" onClick={() => copyToClipboard(hexToRgb(color))}>
                 <CopyIcon className="h-4 w-4" />
               </Button>
@@ -297,14 +303,14 @@ const EmojiGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Emoji Generator 😜</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Emoji Generator 😜</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="emojiCategory">Category</Label>
+            <Label htmlFor="emojiCategory" className="text-gray-700 dark:text-gray-300">Category</Label>
             <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value as keyof typeof emojiCategories)}>
               <SelectTrigger id="emojiCategory">
                 <SelectValue placeholder="Select a category" />
@@ -318,9 +324,9 @@ const EmojiGenerator = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={generateEmoji}>Generate Emoji</Button>
+          <Button onClick={generateEmoji} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Emoji</Button>
           {generatedEmoji && (
-            <div className="flex items-center justify-center text-6xl h-20 rounded-md border border-dashed">
+            <div className="flex items-center justify-center text-6xl h-20 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               {generatedEmoji}
             </div>
           )}{generatedEmoji}
@@ -357,14 +363,14 @@ const PasswordGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Password Generator 🔐</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Password Generator 🔐</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="passwordLength">Length: {length}</Label>
+            <Label htmlFor="passwordLength" className="text-gray-700 dark:text-gray-300">Length: {length}</Label>
             <Input
               id="passwordLength"
               type="range"
@@ -372,6 +378,7 @@ const PasswordGenerator = () => {
               max="32"
               value={length}
               onChange={(e) => setLength(Number(e.target.value))}
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
           <div className="flex items-center space-x-2">
@@ -380,7 +387,7 @@ const PasswordGenerator = () => {
               checked={includeUppercase}
               onCheckedChange={(checked) => setIncludeUppercase(checked as boolean)}
             />
-            <Label htmlFor="includeUppercase">Include Uppercase</Label>
+            <Label htmlFor="includeUppercase" className="text-gray-700 dark:text-gray-300">Include Uppercase</Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -388,7 +395,7 @@ const PasswordGenerator = () => {
               checked={includeNumbers}
               onCheckedChange={(checked) => setIncludeNumbers(checked as boolean)}
             />
-            <Label htmlFor="includeNumbers">Include Numbers</Label>
+            <Label htmlFor="includeNumbers" className="text-gray-700 dark:text-gray-300">Include Numbers</Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -396,13 +403,13 @@ const PasswordGenerator = () => {
               checked={includeSymbols}
               onCheckedChange={(checked) => setIncludeSymbols(checked as boolean)}
             />
-            <Label htmlFor="includeSymbols">Include Symbols</Label>
+            <Label htmlFor="includeSymbols" className="text-gray-700 dark:text-gray-300">Include Symbols</Label>
           </div>
-          <Button onClick={generatePassword}>Generate Password</Button>
+          <Button onClick={generatePassword} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Password</Button>
           {generatedPassword && (
-            <div className="grid gap-2">
-              <Label>Generated Password</Label>
-              <Input type="text" value={generatedPassword} readOnly />
+            <div className="grid gap-2 mt-4">
+              <Label className="text-gray-700 dark:text-gray-300">Generated Password</Label>
+              <Input type="text" value={generatedPassword} readOnly className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600" />
             </div>
           )}
         </div>
@@ -428,14 +435,14 @@ const WordGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Word Generator ✍️</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Word Generator ✍️</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="partOfSpeech">Part of Speech</Label>
+            <Label htmlFor="partOfSpeech" className="text-gray-700 dark:text-gray-300">Part of Speech</Label>
             <Select value={selectedPartOfSpeech} onValueChange={(value) => setSelectedPartOfSpeech(value as keyof typeof words)}>
               <SelectTrigger id="partOfSpeech">
                 <SelectValue placeholder="Select part of speech" />
@@ -449,9 +456,9 @@ const WordGenerator = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={generateWord}>Generate Word</Button>
+          <Button onClick={generateWord} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Word</Button>
           {generatedWord && (
-            <div className="flex items-center justify-center text-4xl h-20 rounded-md border border-dashed">
+            <div className="flex items-center justify-center text-4xl h-20 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               {generatedWord}
             </div>
           )}
@@ -476,25 +483,26 @@ const CustomListGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
-        <CardTitle>Custom List Generator 🧾</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Custom List Generator 🧾</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="customList">Enter your list (one item per line)</Label>
+            <Label htmlFor="customList" className="text-gray-700 dark:text-gray-300">Enter your list (one item per line)</Label>
             <Textarea
               id="customList"
-              placeholder="Item 1\nItem 2\nItem 3"
+              placeholder="Enter items, one per line"
               value={listInput}
               onChange={(e) => setListInput(e.target.value)}
               rows={5}
+              className="bg-white dark:bg-slate-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder:text-gray-400 dark:placeholder:text-gray-600"
             />
           </div>
-          <Button onClick={generateItem}>Pick Random Item</Button>
+          <Button onClick={generateItem} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Pick Random Item</Button>
           {generatedItem && (
-            <div className="flex items-center justify-center text-xl h-20 rounded-md border border-dashed">
+            <div className="flex items-center justify-center text-xl h-20 bg-white dark:bg-slate-800/50 rounded-md shadow-sm">
               {generatedItem}
             </div>
           )}
@@ -508,14 +516,14 @@ const UniversalRandomGenerator = () => {
   const [generatorType, setGeneratorType] = useState('number');
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
       <CardHeader>
-        <CardTitle>Universal Random Generator</CardTitle>
+        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Universal Random Generator</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="generatorType">Select Generator</Label>
+            <Label htmlFor="generatorType" className="text-gray-700 dark:text-gray-300">Select Generator</Label>
             <Select value={generatorType} onValueChange={setGeneratorType}>
               <SelectTrigger id="generatorType">
                 <SelectValue placeholder="Select a generator" />
