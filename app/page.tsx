@@ -110,6 +110,9 @@ export default function Home() {
                   <DropdownMenuItem asChild>
                     <Link href="/calculators/currency-converter">Currency Converter</Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/savings-goal-calculator">Savings Goal Calculator</Link>
+                  </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
