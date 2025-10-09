@@ -76,6 +76,9 @@ export default function Home() {
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/statistics-calculator">Statistics Calculator</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/quadratic-formula-calculator">Quadratic Formula Calculator</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
@@ -146,9 +149,6 @@ export default function Home() {
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>Games & Fun</DropdownMenuSubTrigger>
                   <DropdownMenuSubContent>
-                    <DropdownMenuItem asChild>
-                      <Link href="/calculators/dice-roller">Dice Roller</Link>
-                    </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href="/universal-random-generator">Universal Random Generator</Link>
                     </DropdownMenuItem>

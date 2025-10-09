@@ -5,3 +5,8 @@ export const metadata: Metadata = {
   description: "Smart Calculations, Made Easy",
     generator: 'v0.app'
 }
+
+export const quadraticFormulaCalculatorMetadata: Metadata = {
+  title: "Quadratic Formula Calculator - KlickKlack",
+  description: "Calculate the roots of a quadratic equation using the quadratic formula.",
+};
