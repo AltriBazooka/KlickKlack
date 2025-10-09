@@ -146,6 +146,9 @@ export default function Home() {
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/dice-roller">Dice Roller</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/universal-random-generator">Universal Random Generator</Link>
+                    </DropdownMenuItem>
                     {/* Add Games & Fun calculators here */}
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
