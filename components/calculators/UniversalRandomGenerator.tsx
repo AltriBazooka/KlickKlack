@@ -45,11 +45,7 @@ const NumberGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Number Generator 🔢</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="min" className="text-gray-700 dark:text-gray-300">Min</Label>
@@ -99,7 +95,7 @@ const NumberGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
+
   );
 };
 
@@ -118,11 +114,7 @@ const NameGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Name Generator 👤</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="nameList" className="text-gray-700 dark:text-gray-300">Names (comma-separated)</Label>
@@ -143,7 +135,6 @@ const NameGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -169,11 +160,7 @@ const CoinDiceGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Coin Flip / Dice Roll 🪙🎲</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="coinDiceMode" className="text-gray-700 dark:text-gray-300">Mode</Label>
@@ -224,7 +211,6 @@ const CoinDiceGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -250,11 +236,7 @@ const ColorGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Color Generator 🎨</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <Button onClick={generateRandomColor} className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors">Generate Random Color</Button>
           <div className="flex items-center justify-center h-20 rounded-md" style={{ backgroundColor: color }}></div>
@@ -278,7 +260,7 @@ const ColorGenerator = () => {
           </div>
         </div>
       </CardContent>
-    </Card>
+
   );
 };
 
@@ -303,11 +285,7 @@ const EmojiGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Emoji Generator 😜</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="emojiCategory" className="text-gray-700 dark:text-gray-300">Category</Label>
@@ -332,7 +310,6 @@ const EmojiGenerator = () => {
           )}{generatedEmoji}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -363,11 +340,7 @@ const PasswordGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Password Generator 🔐</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="passwordLength" className="text-gray-700 dark:text-gray-300">Length: {length}</Label>
@@ -414,7 +387,6 @@ const PasswordGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -435,11 +407,7 @@ const WordGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Word Generator ✍️</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="partOfSpeech" className="text-gray-700 dark:text-gray-300">Part of Speech</Label>
@@ -464,7 +432,6 @@ const WordGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -483,11 +450,7 @@ const CustomListGenerator = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Custom List Generator 🧾</CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="customList" className="text-gray-700 dark:text-gray-300">Enter your list (one item per line)</Label>
@@ -508,7 +471,6 @@ const CustomListGenerator = () => {
           )}
         </div>
       </CardContent>
-    </Card>
   );
 };
 
@@ -516,14 +478,14 @@ const UniversalRandomGenerator = () => {
   const [generatorType, setGeneratorType] = useState('number');
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm p-8">
+    <Card className="w-full max-w-md mx-auto bg-white dark:bg-slate-800/50 border-gray-200 dark:border-gray-700 shadow-sm">
       <CardHeader>
         <CardTitle className="text-center text-2xl font-bold p-4 border-b border-gray-300 dark:border-gray-700">Universal Random Generator</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6 space-y-4">
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="generatorType" className="text-gray-700 dark:text-gray-300">Select Generator</Label>
+            <Label htmlFor="generator-select" className="text-gray-700 dark:text-gray-300">Select Generator</Label>
             <Select value={generatorType} onValueChange={setGeneratorType}>
               <SelectTrigger id="generatorType">
                 <SelectValue placeholder="Select a generator" />
