@@ -79,6 +79,7 @@ export default function Home() {
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/quadratic-formula-calculator">Quadratic Formula Calculator</Link>
                     </DropdownMenuItem>
+
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
@@ -90,6 +91,9 @@ export default function Home() {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/pomodoro-calculator">Pomodoro Calculator</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/word-counter-calculator">Word Counter Calculator</Link>
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>

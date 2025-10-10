@@ -18,6 +18,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "time-zone-converter": dynamic(() => import("@/components/calculators/TimeZoneConverter"), { ssr: false }),
   "unit-converter": dynamic(() => import("@/components/calculators/UnitConverter"), { ssr: false }),
   "typing-speed-calculator": dynamic(() => import("@/components/calculators/TypingSpeedCalculator"), { ssr: false }),
+  "word-counter-calculator": dynamic(() => import("@/components/calculators/WordCounterCalculator"), { ssr: false }),
   "percentage-calculator": dynamic(() => import("@/components/calculators/PercentageCalculator"), { ssr: false }),
   "scientific-calculator": dynamic(() => import("@/components/calculators/ScientificCalculator"), { ssr: false }),
   "statistics-calculator": dynamic(() => import("@/components/calculators/StatisticsCalculator"), { ssr: false }),
@@ -25,6 +26,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "dice-roller": dynamic(() => import("@/components/calculators/DiceRoller"), { ssr: false }),
   "savings-goal-calculator": dynamic(() => import("@/components/calculators/SavingsGoalCalculator"), { ssr: false }),
   "quadratic-formula-calculator": dynamic(() => import("@/components/calculators/QuadraticFormulaCalculator"), { ssr: false }),
+
 
 };
 
