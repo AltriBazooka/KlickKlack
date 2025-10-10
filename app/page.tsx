@@ -126,6 +126,12 @@ export default function Home() {
                   <DropdownMenuItem asChild>
                     <Link href="/calculators/savings-goal-calculator">Savings Goal Calculator</Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/compound-interest-calculator">Compound Interest Calculator</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/calculators/investment-calculator">Investment Calculator</Link>
+                  </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 

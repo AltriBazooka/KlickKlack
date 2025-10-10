@@ -15,3 +15,13 @@ export const wordCounterCalculatorMetadata: Metadata = {
   title: "Word Counter Calculator - KlickKlack",
   description: "Count words, characters, sentences, paragraphs, and estimate pages.",
 };
+
+export const compoundInterestCalculatorMetadata: Metadata = {
+  title: "Compound Interest Calculator - KlickKlack",
+  description: "Calculate compound interest on your investments or savings.",
+};
+
+export const investmentCalculatorMetadata: Metadata = {
+  title: "Investment Calculator - KlickKlack",
+  description: "Plan and forecast your investments with our investment calculator.",
+};
