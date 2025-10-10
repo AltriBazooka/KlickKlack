@@ -90,6 +90,9 @@ export default function Home() {
                       <Link href="/calculators/typing-speed-calculator">Typing Speed Calculator</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
+                      <Link href="/reading-time-calculator">Reading Time Calculator</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/calculators/pomodoro-calculator">Pomodoro Calculator</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
