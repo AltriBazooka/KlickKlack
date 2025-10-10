@@ -26,6 +26,7 @@ const calculators: Record<string, React.ComponentType<any>> = {
   "dice-roller": dynamic(() => import("@/components/calculators/DiceRoller"), { ssr: false }),
   "savings-goal-calculator": dynamic(() => import("@/components/calculators/SavingsGoalCalculator"), { ssr: false }),
   "quadratic-formula-calculator": dynamic(() => import("@/components/calculators/QuadraticFormulaCalculator"), { ssr: false }),
+  "goal-tracker": dynamic(() => import("@/components/calculators/GoalTracker"), { ssr: false }),
 
 
 };

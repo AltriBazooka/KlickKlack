@@ -98,6 +98,9 @@ export default function Home() {
                     <DropdownMenuItem asChild>
                       <Link href="/calculators/word-counter-calculator">Word Counter Calculator</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/calculators/goal-tracker">Goal Tracker</Link>
+                    </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
